@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		CE4222D62C98564100A6ECD8 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = CE4222D52C98564100A6ECD8 /* .gitignore */; };
+		CE4222D82C98581E00A6ECD8 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4222D72C98581E00A6ECD8 /* User.swift */; };
+		CE4222DA2C9858DE00A6ECD8 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4222D92C9858DE00A6ECD8 /* API.swift */; };
 		CE95327B2C9829E50097F670 /* profile42App.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE95327A2C9829E50097F670 /* profile42App.swift */; };
 		CE95327D2C9829E50097F670 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE95327C2C9829E50097F670 /* ContentView.swift */; };
 		CE95327F2C9829E60097F670 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE95327E2C9829E60097F670 /* Assets.xcassets */; };
@@ -16,7 +18,6 @@
 		CE9532962C9829E60097F670 /* profile42UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9532952C9829E60097F670 /* profile42UITests.swift */; };
 		CE9532982C9829E60097F670 /* profile42UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9532972C9829E60097F670 /* profile42UITestsLaunchTests.swift */; };
 		CE9532A92C982F7C0097F670 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9532A82C982F7C0097F670 /* AuthManager.swift */; };
-		CE9532AB2C982F980097F670 /* AuthResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9532AA2C982F980097F670 /* AuthResponse.swift */; };
 		CE9532AD2C982FF00097F670 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9532AC2C982FF00097F670 /* AuthViewController.swift */; };
 		CE9532B02C984FF20097F670 /* API-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE9532AF2C984FF20097F670 /* API-Info.plist */; };
 /* End PBXBuildFile section */
@@ -40,6 +41,8 @@
 
 /* Begin PBXFileReference section */
 		CE4222D52C98564100A6ECD8 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		CE4222D72C98581E00A6ECD8 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		CE4222D92C9858DE00A6ECD8 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		CE9532772C9829E50097F670 /* profile42.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = profile42.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE95327A2C9829E50097F670 /* profile42App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = profile42App.swift; sourceTree = "<group>"; };
 		CE95327C2C9829E50097F670 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -51,7 +54,6 @@
 		CE9532952C9829E60097F670 /* profile42UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = profile42UITests.swift; sourceTree = "<group>"; };
 		CE9532972C9829E60097F670 /* profile42UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = profile42UITestsLaunchTests.swift; sourceTree = "<group>"; };
 		CE9532A82C982F7C0097F670 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
-		CE9532AA2C982F980097F670 /* AuthResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthResponse.swift; sourceTree = "<group>"; };
 		CE9532AC2C982FF00097F670 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		CE9532AE2C9837FE0097F670 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CE9532AF2C984FF20097F670 /* API-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "API-Info.plist"; sourceTree = "<group>"; };
@@ -109,9 +111,10 @@
 				CE9532AE2C9837FE0097F670 /* Info.plist */,
 				CE95327A2C9829E50097F670 /* profile42App.swift */,
 				CE95327C2C9829E50097F670 /* ContentView.swift */,
+				CE4222D72C98581E00A6ECD8 /* User.swift */,
+				CE4222D92C9858DE00A6ECD8 /* API.swift */,
 				CE9532AF2C984FF20097F670 /* API-Info.plist */,
 				CE9532A82C982F7C0097F670 /* AuthManager.swift */,
-				CE9532AA2C982F980097F670 /* AuthResponse.swift */,
 				CE9532AC2C982FF00097F670 /* AuthViewController.swift */,
 				CE95327E2C9829E60097F670 /* Assets.xcassets */,
 				CE9532802C9829E60097F670 /* Preview Content */,
@@ -279,7 +282,8 @@
 				CE95327D2C9829E50097F670 /* ContentView.swift in Sources */,
 				CE9532A92C982F7C0097F670 /* AuthManager.swift in Sources */,
 				CE9532AD2C982FF00097F670 /* AuthViewController.swift in Sources */,
-				CE9532AB2C982F980097F670 /* AuthResponse.swift in Sources */,
+				CE4222D82C98581E00A6ECD8 /* User.swift in Sources */,
+				CE4222DA2C9858DE00A6ECD8 /* API.swift in Sources */,
 				CE95327B2C9829E50097F670 /* profile42App.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

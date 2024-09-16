@@ -1,0 +1,273 @@
+//
+//  User.swift
+//  profile42
+//
+//  Created by Thibault Giraudon on 16/09/2024.
+//
+
+import Foundation
+
+struct User: Codable {
+    let id: Int
+    let email: String
+    let login: String
+    let firstName: String
+    let lastName: String
+    let usualFullName: String
+    let usualFirstName: String?
+    let url: String
+    let phone: String?
+    let displayName: String
+    let kind: String
+    let image: Image
+    let isStaff: Bool
+    let correctionPoint: Int
+    let poolMonth: String
+    let poolYear: String
+    let location: String?
+    let wallet: Int
+    let anonymizeDate: String
+    let dataErasureDate: String?
+    let isAlumni: Bool
+    let isActive: Bool
+    let groups: [String]
+    let cursusUsers: [CursusUser]
+    let projectsUsers: [ProjectUser]
+    let languagesUsers: [LanguageUser]
+    let achievements: [Achievement]
+    let titles: [String]
+    let titlesUsers: [String]
+    let partnerships: [String]
+    let patroned: [Patron]
+    let patroning: [String]
+    let expertisesUsers: [ExpertiseUser]
+    let roles: [String]
+    let campus: [Campus]
+    let campusUsers: [CampusUser]
+
+    enum CodingKeys: String, CodingKey {
+        case id, email, login, url, phone, kind, image, wallet, location, groups, achievements, titles, partnerships, roles, campus
+        case firstName = "first_name"
+        case lastName = "last_name"
+        case usualFullName = "usual_full_name"
+        case usualFirstName = "usual_first_name"
+        case displayName = "displayname"
+        case isStaff = "staff?"
+        case correctionPoint = "correction_point"
+        case poolMonth = "pool_month"
+        case poolYear = "pool_year"
+        case anonymizeDate = "anonymize_date"
+        case dataErasureDate = "data_erasure_date"
+        case isAlumni = "alumni?"
+        case isActive = "active?"
+        case cursusUsers = "cursus_users"
+        case projectsUsers = "projects_users"
+        case languagesUsers = "languages_users"
+        case titlesUsers = "titles_users"
+        case patroned, patroning
+        case expertisesUsers = "expertises_users"
+        case campusUsers = "campus_users"
+    }
+}
+
+struct Image: Codable {
+    let link: String
+    let versions: Versions
+
+    struct Versions: Codable {
+        let large: String
+        let medium: String
+        let small: String
+        let micro: String
+    }
+}
+
+struct CursusUser: Codable {
+    let id: Int
+    let beginAt: String
+    let endAt: String?
+    let grade: String?
+    let level: Double
+    let skills: [Skills]
+    let cursusID: Int
+    let hasCoalition: Bool
+    let user: UserRef
+    let cursus: Cursus
+
+    enum CodingKeys: String, CodingKey {
+        case id, grade, level, skills, user, cursus
+        case beginAt = "begin_at"
+        case endAt = "end_at"
+        case cursusID = "cursus_id"
+        case hasCoalition = "has_coalition"
+    }
+    
+    struct Skills: Codable {
+        let id: Int
+        let name: String
+        let level: Double
+    }
+
+    struct UserRef: Codable {
+        let id: Int
+        let login: String
+        let url: String
+    }
+
+    struct Cursus: Codable {
+        let id: Int
+        let createdAt: String
+        let name: String
+        let slug: String
+
+        enum CodingKeys: String, CodingKey {
+            case id, name, slug
+            case createdAt = "created_at"
+        }
+    }
+}
+
+struct LanguageUser: Codable {
+    let id: Int
+    let languageID: Int
+    let userID: Int
+    let position: Int
+    let createdAt: String
+
+    enum CodingKeys: String, CodingKey {
+        case id, position
+        case languageID = "language_id"
+        case userID = "user_id"
+        case createdAt = "created_at"
+    }
+}
+
+struct ProjectUser: Codable {
+    let id: Int
+    let occurrence: Int
+    let finalMark: Int
+    let status: String
+    let validated: Bool
+    let currentTeamID: Int
+    let project: Project
+    let cursusIDs: [Int]
+    let markedAt: String
+    let marked: Bool
+    let retriableAt: String?
+    let createdAt: String
+    let updatedAt: String
+
+    enum CodingKeys: String, CodingKey {
+        case id, occurrence, finalMark = "final_mark", status, validated = "validated?", currentTeamID = "current_team_id", project, cursusIDs = "cursus_ids", markedAt = "marked_at", marked, retriableAt = "retriable_at", createdAt = "created_at", updatedAt = "updated_at"
+    }
+
+    struct Project: Codable {
+        let id: Int
+        let name: String
+        let slug: String
+        let parentID: Int?
+
+        enum CodingKeys: String, CodingKey {
+            case id, name, slug
+            case parentID = "parent_id"
+        }
+    }
+}
+
+
+struct Achievement: Codable {
+    let id: Int
+    let name: String
+    let tier: String
+    let kind: String
+    let visible: Bool
+    let image: String
+    let nbrOfSuccess: Int?
+    let usersURL: String
+    
+    enum CodingKeys: String, CodingKey {
+        case id, name, tier, kind, visible, image
+        case nbrOfSuccess = "nbr_of_success"
+        case usersURL = "users_url"
+    }
+}
+
+struct Patron: Codable {
+    let id: Int
+    let userID: Int
+    let godfatherID: Int
+    let ongoing: Bool
+    let createdAt: String
+    let updatedAt: String
+
+    enum CodingKeys: String, CodingKey {
+        case id, ongoing
+        case userID = "user_id"
+        case godfatherID = "godfather_id"
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+    }
+}
+
+struct ExpertiseUser: Codable {
+    let id: Int
+    let expertiseID: Int
+    let interested: Bool
+    let value: Int
+    let contactMe: Bool
+    let createdAt: String
+    let userID: Int
+
+    enum CodingKeys: String, CodingKey {
+        case id, interested, value
+        case expertiseID = "expertise_id"
+        case contactMe = "contact_me"
+        case createdAt = "created_at"
+        case userID = "user_id"
+    }
+}
+
+struct Campus: Codable {
+    let id: Int
+    let name: String
+    let timeZone: String
+    let language: Language
+    let usersCount: Int
+    let vogsphereID: Int
+
+    enum CodingKeys: String, CodingKey {
+        case id, name, language
+        case timeZone = "time_zone"
+        case usersCount = "users_count"
+        case vogsphereID = "vogsphere_id"
+    }
+
+    struct Language: Codable {
+        let id: Int
+        let name: String
+        let identifier: String
+        let createdAt: String
+        let updatedAt: String
+
+        enum CodingKeys: String, CodingKey {
+            case id, name, identifier
+            case createdAt = "created_at"
+            case updatedAt = "updated_at"
+        }
+    }
+}
+
+struct CampusUser: Codable {
+    let id: Int
+    let userID: Int
+    let campusID: Int
+    let isPrimary: Bool
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case userID = "user_id"
+        case campusID = "campus_id"
+        case isPrimary = "is_primary"
+    }
+}
+

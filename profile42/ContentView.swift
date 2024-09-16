@@ -9,6 +9,7 @@ import SwiftUI
 import WebKit
 
 struct ContentView: View {
+    @State private var api = API()
     private var authManager = AuthManager()
     @State private var showingWebView = false
     @State private var accessToken: String?
@@ -30,6 +31,11 @@ struct ContentView: View {
                         showingWebView = false
                     }
                 }
+            }
+        }
+        .onChange(of: accessToken) {
+            if let token = accessToken {
+                api.fetchUserData(token: token)
             }
         }
     }
