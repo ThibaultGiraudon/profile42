@@ -10,6 +10,7 @@
 		CE4222D62C98564100A6ECD8 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = CE4222D52C98564100A6ECD8 /* .gitignore */; };
 		CE4222D82C98581E00A6ECD8 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4222D72C98581E00A6ECD8 /* User.swift */; };
 		CE4222DA2C9858DE00A6ECD8 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4222D92C9858DE00A6ECD8 /* API.swift */; };
+		CE4222DC2C9877E600A6ECD8 /* Coalition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4222DB2C9877E600A6ECD8 /* Coalition.swift */; };
 		CE95327B2C9829E50097F670 /* profile42App.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE95327A2C9829E50097F670 /* profile42App.swift */; };
 		CE95327D2C9829E50097F670 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE95327C2C9829E50097F670 /* ContentView.swift */; };
 		CE95327F2C9829E60097F670 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE95327E2C9829E60097F670 /* Assets.xcassets */; };
@@ -43,6 +44,7 @@
 		CE4222D52C98564100A6ECD8 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		CE4222D72C98581E00A6ECD8 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		CE4222D92C9858DE00A6ECD8 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		CE4222DB2C9877E600A6ECD8 /* Coalition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coalition.swift; sourceTree = "<group>"; };
 		CE9532772C9829E50097F670 /* profile42.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = profile42.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE95327A2C9829E50097F670 /* profile42App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = profile42App.swift; sourceTree = "<group>"; };
 		CE95327C2C9829E50097F670 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 		CE95326E2C9829E50097F670 = {
 			isa = PBXGroup;
 			children = (
+				CE4222DB2C9877E600A6ECD8 /* Coalition.swift */,
 				CE4222D52C98564100A6ECD8 /* .gitignore */,
 				CE9532792C9829E50097F670 /* profile42 */,
 				CE95328A2C9829E60097F670 /* profile42Tests */,
@@ -283,6 +286,7 @@
 				CE9532A92C982F7C0097F670 /* AuthManager.swift in Sources */,
 				CE9532AD2C982FF00097F670 /* AuthViewController.swift in Sources */,
 				CE4222D82C98581E00A6ECD8 /* User.swift in Sources */,
+				CE4222DC2C9877E600A6ECD8 /* Coalition.swift in Sources */,
 				CE4222DA2C9858DE00A6ECD8 /* API.swift in Sources */,
 				CE95327B2C9829E50097F670 /* profile42App.swift in Sources */,
 			);

@@ -19,7 +19,7 @@ struct User: Codable {
     let phone: String?
     let displayName: String
     let kind: String
-    let image: Image
+    let image: SImage
     let isStaff: Bool
     let correctionPoint: Int
     let poolMonth: String
@@ -44,6 +44,45 @@ struct User: Codable {
     let roles: [String]
     let campus: [Campus]
     let campusUsers: [CampusUser]
+    
+    init() {
+        self.id = 0
+        self.email = ""
+        self.login = ""
+        self.firstName = ""
+        self.lastName = ""
+        self.usualFullName = ""
+        self.usualFirstName = ""
+        self.url = ""
+        self.phone = ""
+        self.displayName = ""
+        self.kind = ""
+        self.image = SImage()
+        self.isStaff = false
+        self.correctionPoint = 0
+        self.poolMonth = ""
+        self.poolYear = ""
+        self.location = ""
+        self.wallet = 0
+        self.anonymizeDate = ""
+        self.dataErasureDate = ""
+        self.isAlumni = false
+        self.isActive = false
+        self.groups = []
+        self.cursusUsers = []
+        self.projectsUsers = []
+        self.languagesUsers = []
+        self.achievements = []
+        self.titles = []
+        self.titlesUsers = []
+        self.partnerships = []
+        self.patroned = []
+        self.patroning = []
+        self.expertisesUsers = []
+        self.roles = []
+        self.campus = []
+        self.campusUsers = []
+    }
 
     enum CodingKeys: String, CodingKey {
         case id, email, login, url, phone, kind, image, wallet, location, groups, achievements, titles, partnerships, roles, campus
@@ -70,7 +109,7 @@ struct User: Codable {
     }
 }
 
-struct Image: Codable {
+struct SImage: Codable {
     let link: String
     let versions: Versions
 
@@ -79,6 +118,18 @@ struct Image: Codable {
         let medium: String
         let small: String
         let micro: String
+        
+        init() {
+            self.large = ""
+            self.medium = ""
+            self.small = ""
+            self.micro = ""
+        }
+    }
+    
+    init() {
+        self.link = ""
+        self.versions = Versions()
     }
 }
 
@@ -93,6 +144,19 @@ struct CursusUser: Codable {
     let hasCoalition: Bool
     let user: UserRef
     let cursus: Cursus
+    
+    init() {
+        self.id = 0
+        self.beginAt = ""
+        self.endAt = ""
+        self.grade = ""
+        self.level = 0.0
+        self.skills = []
+        self.cursusID = 0
+        self.hasCoalition = false
+        self.user = UserRef(id: 0, login: "", url: "")
+        self.cursus = Cursus(id: 0, createdAt: "", name: "", slug: "")
+    }
 
     enum CodingKeys: String, CodingKey {
         case id, grade, level, skills, user, cursus
