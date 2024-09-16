@@ -12,8 +12,8 @@ final class AuthManager {
     
     struct Constants {
         static let authorizationApiUrl = "https://api.intra.42.fr/oauth/authorize"
-        static let clientID = getValue(from: "clientID")
-        static let clientSecret = getValue(from: "clientSecret")
+        static let clientID = getValue(from: "ClientID")
+        static let clientSecret = getValue(from: "ClientSecret")
         static let tokenAPIURL  = "https://api.intra.42.fr/oauth/token"
         static let redirectURI = "https://www.google.com/"
         static let scopes = "public+projects+profile"
@@ -71,8 +71,8 @@ func getValue(from key: String) -> String {
     
     let plist = NSDictionary(contentsOfFile: filePath)
     
-    guard let value = plist?.object(forKey: "API_KEY") as? String else {
-        print("Couldn't find key 'API_KEY' in 'API-Info.plist'.")
+    guard let value = plist?.object(forKey: key) as? String else {
+        print("Couldn't find key \(key) in 'API-Info.plist'.")
         return ""
     }
     
