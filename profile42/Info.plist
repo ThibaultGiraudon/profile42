@@ -11,7 +11,7 @@
 			<string>com.tgiraudo.profile42</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>myapp</string>
+				<string>myapp://oauth</string>
 			</array>
 		</dict>
 	</array>

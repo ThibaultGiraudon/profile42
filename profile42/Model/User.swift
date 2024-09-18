@@ -34,7 +34,7 @@ struct User: Codable {
     let cursusUsers: [CursusUser]
     let projectsUsers: [ProjectUser]
     let languagesUsers: [LanguageUser]
-    let achievements: [Achievement]
+    var achievements: [Achievement]
     let titles: [String]
     let titlesUsers: [String]
     let partnerships: [String]
@@ -166,13 +166,13 @@ struct CursusUser: Codable {
         case hasCoalition = "has_coalition"
     }
     
-    struct Skills: Codable {
+    struct Skills: Codable, Identifiable  {
         let id: Int
         let name: String
         let level: Double
     }
 
-    struct UserRef: Codable {
+    struct UserRef: Codable{
         let id: Int
         let login: String
         let url: String
@@ -206,16 +206,24 @@ struct LanguageUser: Codable {
     }
 }
 
-struct ProjectUser: Codable {
+struct ProjectUser: Codable, Identifiable, Hashable {
+    static func == (lhs: ProjectUser, rhs: ProjectUser) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        
+    }
+    
     let id: Int
     let occurrence: Int
-    let finalMark: Int
+    let finalMark: Int?
     let status: String
-    let validated: Bool
+    let validated: Bool?
     let currentTeamID: Int
     let project: Project
     let cursusIDs: [Int]
-    let markedAt: String
+    let markedAt: String?
     let marked: Bool
     let retriableAt: String?
     let createdAt: String
@@ -242,6 +250,7 @@ struct ProjectUser: Codable {
 struct Achievement: Codable {
     let id: Int
     let name: String
+    let description: String
     let tier: String
     let kind: String
     let visible: Bool
@@ -250,7 +259,7 @@ struct Achievement: Codable {
     let usersURL: String
     
     enum CodingKeys: String, CodingKey {
-        case id, name, tier, kind, visible, image
+        case id, name, description, tier, kind, visible, image
         case nbrOfSuccess = "nbr_of_success"
         case usersURL = "users_url"
     }

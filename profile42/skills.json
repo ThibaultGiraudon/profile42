@@ -1,0 +1,101 @@
+{
+      "grade": "Member",
+      "level": 10.46,
+      "skills": [
+        {
+          "id": 3,
+          "name": "Rigor",
+          "level": 7.55
+        },
+        {
+          "id": 10,
+          "name": "Network & system administration",
+          "level": 6.91
+        },
+        {
+          "id": 6,
+          "name": "Web",
+          "level": 6.52
+        },
+        {
+          "id": 17,
+          "name": "Object-oriented programming",
+          "level": 5.45
+        },
+        {
+          "id": 2,
+          "name": "Imperative programming",
+          "level": 4.9
+        },
+        {
+          "id": 4,
+          "name": "Unix",
+          "level": 4.27
+        },
+        {
+          "id": 1,
+          "name": "Algorithms & AI",
+          "level": 4.01
+        },
+        {
+          "id": 7,
+          "name": "Group & interpersonal",
+          "level": 4
+        },
+        {
+          "id": 5,
+          "name": "Graphics",
+          "level": 3.29
+        }
+      ],
+      "blackholed_at": null,
+      "id": 192570,
+      "begin_at": "2022-11-07T11:42:00.000Z",
+      "end_at": null,
+      "cursus_id": 21,
+      "has_coalition": true,
+      "created_at": "2022-10-07T15:23:56.641Z",
+      "updated_at": "2022-10-07T15:23:56.641Z",
+      "user": {
+        "id": 128352,
+        "email": "tgiraudo@student.42lyon.fr",
+        "login": "tgiraudo",
+        "first_name": "Thibault",
+        "last_name": "Giraudon",
+        "usual_full_name": "Thibault Giraudon",
+        "usual_first_name": null,
+        "url": "https://api.intra.42.fr/v2/users/tgiraudo",
+        "phone": "hidden",
+        "displayname": "Thibault Giraudon",
+        "kind": "student",
+        "image": {
+          "link": "https://cdn.intra.42.fr/users/553d2526854fd2c51ac9d2d7e51da733/tgiraudo.jpg",
+          "versions": {
+            "large": "https://cdn.intra.42.fr/users/64c72a4ac99601a3f35ec073089959c4/large_tgiraudo.jpg",
+            "medium": "https://cdn.intra.42.fr/users/e5e746baf907b909b1b8f65fd50a5388/medium_tgiraudo.jpg",
+            "small": "https://cdn.intra.42.fr/users/06666d0b8ea10635f50b0b1ce8099d8f/small_tgiraudo.jpg",
+            "micro": "https://cdn.intra.42.fr/users/7045594aebfca6725dd05404036fa00b/micro_tgiraudo.jpg"
+          }
+        },
+        "staff?": false,
+        "correction_point": 2,
+        "pool_month": "august",
+        "pool_year": "2022",
+        "location": null,
+        "wallet": 150,
+        "anonymize_date": "2027-09-16T00:00:00.000+02:00",
+        "data_erasure_date": "2027-09-16T00:00:00.000+02:00",
+        "created_at": "2022-07-26T12:18:59.966Z",
+        "updated_at": "2024-05-23T15:48:40.174Z",
+        "alumnized_at": null,
+        "alumni?": false,
+        "active?": true
+      },
+      "cursus": {
+        "id": 21,
+        "created_at": "2019-07-29T08:45:17.896Z",
+        "name": "42cursus",
+        "slug": "42cursus",
+        "kind": "main"
+      }
+    }
