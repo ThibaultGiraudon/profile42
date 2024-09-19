@@ -46,11 +46,11 @@ enum FilterBy: String, CaseIterable {
 }
 
 struct AllAchievementsView: View {
-    @StateObject var api: API
+    var user: User
     @State private var selectedRank: FilterBy = .none
     @State private var selectedKind: Kind = .all
     var filteredAchievement: [Achievement] {
-        api.user.achievements.filter{ (selectedKind == .all ? true : $0.kind == selectedKind.rawValue) && $0.tier == selectedRank.name }
+        user.achievements.filter{ (selectedKind == .all ? true : $0.kind == selectedKind.rawValue) && $0.tier == selectedRank.name }
     }
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -147,12 +147,9 @@ struct AllAchievementsView: View {
                 }
             }
         }
-        .onAppear {
-            api.user.achievements = decode("achievement.json")
-        }
     }
 }
 
 #Preview() {
-    AllAchievementsView(api: API())
+    AllAchievementsView(user: User())
 }

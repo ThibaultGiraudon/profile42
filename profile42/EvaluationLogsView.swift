@@ -19,18 +19,20 @@ extension String {
 }
 
 struct EvaluationLogsView: View {
-    @StateObject var api: API
+    var api: API
+    var user: User
     let numberFormatter: NumberFormatter = {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .none
         numberFormatter.positivePrefix = "+"
         return numberFormatter
     }()
+    @State private var evaluationLogs = [Correction]()
     var body: some View {
         VStack {
             Text("Evalution Points Historics")
                 .font(.title2)
-            Chart(api.evaluationLogs.sorted { $0.createdAt < $1.createdAt }) { evaluation in
+            Chart(evaluationLogs.sorted { $0.createdAt < $1.createdAt }) { evaluation in
                 AreaMark(
                     x: .value("Date", evaluation.createdAt),
                     y: .value("Points", evaluation.total + evaluation.sum)
@@ -45,7 +47,7 @@ struct EvaluationLogsView: View {
             .padding()
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading) {
-                    ForEach(api.evaluationLogs) { evaluation in
+                    ForEach(evaluationLogs) { evaluation in
                         HStack {
                             VStack {
                                 Text(numberFormatter.string(for: evaluation.sum) ?? "0")
@@ -65,13 +67,19 @@ struct EvaluationLogsView: View {
                     }
                 }
             }
-        }
-        .onAppear {
-            api.evaluationLogs = decode("evaluationLogs.json")
+            .onAppear {
+                Task {
+                    do {
+                        evaluationLogs = try await api.fetchData(API.CorrectionEndpoint.correction(id: user.id))
+                    } catch {
+                        
+                    }
+                }
+            }
         }
     }
 }
 
 #Preview {
-    EvaluationLogsView(api: API())
+    EvaluationLogsView(api: API(), user: User())
 }

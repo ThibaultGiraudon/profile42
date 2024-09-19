@@ -19,13 +19,7 @@ class API: ObservableObject {
     @Published var finishedProjects = [ProjectUser]()
     @Published var currentProjects = [ProjectUser]()
     @Published var evaluationLogs = [Correction]()
-    
-//    func formatEvaluateLogs() {
-//        let formatEvaluateLogs = [Correction]()
-//        evaluationLogs.forEach {
-//            
-//        }
-//    }
+    @Published var events = [Event]()
     
     func getFinihedProjects() -> [ProjectUser] {
         user.projectsUsers.filter { $0.validated != nil }
@@ -62,6 +56,8 @@ class API: ObservableObject {
         
         guard (response as? HTTPURLResponse)?.statusCode == 200 else {
             print("Server error")
+            print(apiURL)
+            print((response as? HTTPURLResponse) ?? "Error")
             throw URLError(.badServerResponse)
         }
         

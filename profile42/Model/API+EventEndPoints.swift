@@ -1,29 +1,31 @@
 //
-//  LocationEndPoint.swift
+//  API+EventEndPoints.swift
 //  profile42
 //
-//  Created by Thibault Giraudon on 17/09/2024.
+//  Created by Thibault Giraudon on 18/09/2024.
 //
 
+import Foundation
 import SwiftUI
 
 extension API {
-    enum LocationEndPoint: EndPoint {
-        case location(id: Int, startDate: String)
+    enum EventEndPoints: EndPoint {
+        case events(campusID: Int, cursusID: Int)
         
-        var authorization: authorization { .application }
+        var authorization: API.authorization { .user }
         
         var path: String {
             switch self {
-            case .location(let id, _):
-                return "/v2/users/\(id)/locations_stats"
+            case .events(let campusID, let cursusID):
+                return "/v2/campus/\(campusID)/cursus/\(cursusID)/events"
             }
         }
         
-        var queryItems: [String: String]? {
+        var queryItems: [String : String]? {
             switch self {
-            case .location(_, let startDate):
-                return ["begin_at": String(startDate.prefix(10))]
+            case .events:
+                ["filter[future]": "true",
+                 "sort": "-begin_at"]
             }
         }
         

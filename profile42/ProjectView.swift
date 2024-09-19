@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct ProjectView: View {
-    @StateObject var api: API
-    @State private var projectsUsers: [ProjectUser] = decode("project.json")
+    var finishedProjects: [ProjectUser]
     var body: some View {
         ScrollView {
-            ForEach(api.finishedProjects, id: \.id) { project in
+            ForEach(finishedProjects, id: \.id) { project in
                 HStack {
                     Text(project.project.name)
                         .foregroundStyle(.cyan)
@@ -30,14 +29,11 @@ struct ProjectView: View {
                 .padding()
             }
         }
-        .onAppear {
-            api.finishedProjects = projectsUsers
-        }
     }
 }
 
 #Preview {
-    ProjectView(api: API())
+    ProjectView(finishedProjects: [ProjectUser]())
 }
 
 // open and load data from project.json as ProjectUser

@@ -69,14 +69,14 @@ struct SVGImageView: UIViewRepresentable {
 
 
 struct AchievementsView: View {
-    @StateObject var api: API
+    var user: User
     var body: some View {
         ScrollView(showsIndicators: false) {
             HStack {
                 Text("LAST ACHIEVEMENTS")
                     .font(.headline)
                 Spacer()
-                NavigationLink(destination: AllAchievementsView(api: api)) {
+                NavigationLink(destination: AllAchievementsView(user: user)) {
                     Text("SEE ALL ACHIEVEMENTS")
                         .padding(5)
                         .overlay {
@@ -86,7 +86,7 @@ struct AchievementsView: View {
                         .foregroundStyle(.cyan)
                 }
             }
-            ForEach(api.user.achievements.prefix(5), id: \.id) { achievement in
+            ForEach(user.achievements.prefix(5), id: \.id) { achievement in
                 HStack {
                     VStack(alignment: .leading) {
                         Text(achievement.name)
@@ -142,14 +142,11 @@ struct AchievementsView: View {
                 }
             }
         }
-        .onAppear {
-            api.user.achievements = decode("achievement.json")
-        }
     }
 }
 
 #Preview {
     NavigationStack {
-        AchievementsView(api: API())
+        AchievementsView(user: User())
     }
 }

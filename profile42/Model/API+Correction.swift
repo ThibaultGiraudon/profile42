@@ -9,7 +9,7 @@ import SwiftUI
 
 extension API {
     enum CorrectionEndpoint: EndPoint {
-        case correction(id: String)
+        case correction(id: Int)
         
         var authorization: authorization { .user }
         

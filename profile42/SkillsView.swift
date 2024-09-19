@@ -9,7 +9,7 @@ import SwiftUI
 import Charts
 
 struct SkillsView: View {
-    @StateObject var api: API
+    var currentCursus: CursusUser
     @Environment(\.colorScheme) var colorScheme
     @State private var showDetails: Bool = false
     @State private var selectedSkill: CursusUser.Skills?
@@ -21,7 +21,7 @@ struct SkillsView: View {
                     .foregroundStyle(colorScheme == .dark ? .white : .black)
                 Spacer()
             }
-            Chart(api.currentCursus.skills) { skill in
+            Chart(currentCursus.skills) { skill in
                 BarMark(
                     x: .value("Name", skill.name),
                     y: .value("Level", skill.level))
@@ -33,16 +33,17 @@ struct SkillsView: View {
                     ZStack(alignment: .top) {
                         Rectangle().fill(.clear).contentShape(Rectangle())
                             .onTapGesture { location in
-                                selectedSkill = updateSelectedMonth(at: location, proxy: proxy, geometry: geometry)
-                                print(selectedSkill ?? "No Skill Selected")
+                                selectedSkill = getSkill(at: location, proxy: proxy, geometry: geometry)
                                 showDetails = true
                             }
                         VStack {
                             if let skill = selectedSkill {
                                 Text(skill.name)
                                     .font(.headline)
+                                    .foregroundStyle(.black)
                                 Text(String(skill.level))
                                     .font(.title)
+                                    .foregroundStyle(.black)
                             }
                         }
                     }
@@ -52,13 +53,13 @@ struct SkillsView: View {
         .padding()
     }
     
-    func updateSelectedMonth(at location: CGPoint, proxy: ChartProxy, geometry: GeometryProxy) -> CursusUser.Skills? {
+    func getSkill(at location: CGPoint, proxy: ChartProxy, geometry: GeometryProxy) -> CursusUser.Skills? {
         let xPosition = location.x - geometry[proxy.plotFrame!].origin.x
         guard let skill: String = proxy.value(atX: xPosition) else {
             return nil
         }
-        if let index = api.currentCursus.skills.firstIndex(where: { $0.name == skill }) {
-            return api.currentCursus.skills[index]
+        if let index = currentCursus.skills.firstIndex(where: { $0.name == skill }) {
+            return currentCursus.skills[index]
         }
         return nil
     }
@@ -66,5 +67,5 @@ struct SkillsView: View {
 }
 
 #Preview {
-    SkillsView(api: API())
+    SkillsView(currentCursus: CursusUser())
 }

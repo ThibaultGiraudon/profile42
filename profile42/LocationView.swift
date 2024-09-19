@@ -16,7 +16,8 @@ extension String {
 }
 
 struct LocationView: View {
-    @StateObject var api: API
+    var locationStats: [String: String]
+    var startDate: String
     @State private var showOverlay: Bool = false
     @State private var selectedDate: Date?
     let date: Date = Date()
@@ -27,7 +28,7 @@ struct LocationView: View {
         return formatter
     }()
     private var back: Int {
-        Calendar.current.dateComponents([.month], from: Date(), to: api.currentCursus.beginAt.toDate()).month ?? 0
+        Calendar.current.dateComponents([.month], from: Date(), to: startDate.toDate()).month ?? 0
     }
     
     var body: some View {
@@ -36,12 +37,14 @@ struct LocationView: View {
                 ForEach(generateMonths(back: back, from: date), id: \.self) { month in
                     VStack {
                         Text("\(dateFormatter.string(from: month))")
+                            .foregroundStyle(.black)
                         LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7)) {
                             ForEach(generateDays(for: month), id: \.self) { day in
                                 Text("\(Calendar.current.component(.day, from: day))")
+                                    .foregroundStyle(.black)
                                     .frame(width: 30, height: 30)
                                     .background (
-                                        isDate(in: api.locationStats, date: day) ? .blue.opacity(getOpacity(for: day)) : .gray.opacity(0.1)
+                                        isDate(in: locationStats, date: day) ? .blue.opacity(getOpacity(for: day)) : .gray.opacity(0.1)
                                     )
                                     .zIndex(1)
                                     .onTapGesture {
@@ -84,7 +87,7 @@ struct LocationView: View {
         let formatter = DateFormatter()
         formatter.dateFormat = "YYYY-MM-dd"
         let dateString = formatter.string(from: date)
-        let value = api.locationStats[dateString]!
+        let value = locationStats[dateString]!
         let hour = Double(value.prefix(2)) ?? 0
         let subString = value.dropFirst(3)
         let minute = Double((Int(subString.prefix(2)) ?? 0) / 60)
@@ -95,7 +98,7 @@ struct LocationView: View {
         let formatter = DateFormatter()
         formatter.dateFormat = "YYYY-MM-dd"
         let dateString = formatter.string(from: date)
-        let value = api.locationStats[dateString]
+        let value = locationStats[dateString]
         guard let value else { return "0h00" }
         let newValue = value.replacingOccurrences(of: ":", with: "h")
         return String(newValue.prefix(5))
@@ -126,5 +129,6 @@ struct LocationView: View {
 }
 
 #Preview {
-    LocationView(api: API())
+    let locationStats = ["2024-08-21":"04:20:59.4398","2024-08-14":"06:21:01.901664","2024-08-04":"11:24:18.531457","2024-08-03":"13:02:41.865","2024-08-02":"05:54:59.202939","2024-08-01":"04:14:00.18825","2024-07-31":"11:49:18.01697","2024-07-30":"14:50:44.903031","2024-07-29":"10:25:00.933241","2024-07-28":"04:51:00.303256","2024-07-25":"10:21:00.042789","2024-06-28":"06:35:00.482362","2024-06-26":"06:31:58.689214","2024-06-25":"06:10:00.616138","2024-06-21":"06:04:00.045311","2024-06-18":"06:40:59.408136","2024-06-16":"06:19:59.995317","2024-06-14":"05:44:00.015018","2024-06-13":"06:23:03.651948","2024-06-12":"06:37:58.565964","2024-06-11":"06:11:00.41953","2024-06-07":"07:48:58.908038","2024-06-05":"08:42:59.980638","2024-05-25":"07:31:59.978881","2024-05-24":"09:59:00.267491","2024-05-23":"06:40:00.079178","2024-05-22":"08:53:00.216747"]
+    LocationView(locationStats: locationStats, startDate: "2023-10-25T13:20:23.037Z")
 }

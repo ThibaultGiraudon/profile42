@@ -8,15 +8,18 @@
 import SwiftUI
 
 struct CurrentProjectView: View {
-    @StateObject var api: API
+    var currentProjects: [ProjectUser]
+    var api: API
+    var user: User
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
                 Text("PROJECTS")
+                    .foregroundStyle(.black)
                     .font(.headline)
                     .padding(.bottom)
                 Spacer()
-                NavigationLink(destination: EvaluationLogsView(api: api)) {
+                NavigationLink(destination: EvaluationLogsView(api: api, user: user)) {
                     Text("EVALUATION LOGS")
                         .padding(5)
                         .overlay {
@@ -26,7 +29,7 @@ struct CurrentProjectView: View {
                         .foregroundStyle(.cyan)
                 }
             }
-            ForEach(api.currentProjects, id: \.id) { project in
+            ForEach(currentProjects, id: \.id) { project in
                 Text(project.project.name)
                     .foregroundStyle(.cyan)
             }
@@ -37,6 +40,6 @@ struct CurrentProjectView: View {
 
 #Preview {
     NavigationStack {
-        CurrentProjectView(api: API())
+        CurrentProjectView(currentProjects: [], api: API(), user: User())
     }
 }
