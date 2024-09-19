@@ -32,48 +32,53 @@ struct LocationView: View {
     }
     
     var body: some View {
-        ScrollView(.horizontal) {
+        VStack {
             HStack {
-                ForEach(generateMonths(back: back, from: date), id: \.self) { month in
-                    VStack {
-                        Text("\(dateFormatter.string(from: month))")
-                            .foregroundStyle(.black)
-                        LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7)) {
-                            ForEach(generateDays(for: month), id: \.self) { day in
-                                Text("\(Calendar.current.component(.day, from: day))")
-                                    .foregroundStyle(.black)
-                                    .frame(width: 30, height: 30)
-                                    .background (
-                                        isDate(in: locationStats, date: day) ? .blue.opacity(getOpacity(for: day)) : .gray.opacity(0.1)
-                                    )
-                                    .zIndex(1)
-                                    .onTapGesture {
-                                        showOverlay = true
-                                        selectedDate = day
-                                    }
-                                    .overlay {
-                                        if showOverlay && selectedDate == day {
-                                            ZStack {
-                                                Color.black.opacity(0.8)
-                                                Text("\(getValue(for: day))")
-                                                    .foregroundStyle(.white)
-                                            }
-                                            .frame(width: 80, height: 50)
-                                            .offset(y: -40)
+                Text("LOGTIME")
+                    .font(.headline)
+                    .foregroundStyle(.black)
+                Spacer()
+            }
+            ScrollView(.horizontal) {
+                HStack {
+                    ForEach(generateMonths(back: back, from: date), id: \.self) { month in
+                        VStack {
+                            Text("\(dateFormatter.string(from: month))")
+                                .foregroundStyle(.black)
+                            LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7)) {
+                                ForEach(generateDays(for: month), id: \.self) { day in
+                                    Text("\(Calendar.current.component(.day, from: day))")
+                                        .foregroundStyle(.black)
+                                        .frame(width: 30, height: 30)
+                                        .background (
+                                            isDate(in: locationStats, date: day) ? .blue.opacity(getOpacity(for: day)) : .gray.opacity(0.1)
+                                        )
+                                        .zIndex(1)
+                                        .onTapGesture {
+                                            showOverlay = true
+                                            selectedDate = day
                                         }
-                                    }
-                                    .zIndex(2)
+                                        .overlay {
+                                            if showOverlay && selectedDate == day {
+                                                ZStack {
+                                                    Color.black.opacity(0.8)
+                                                    Text("\(getValue(for: day))")
+                                                        .foregroundStyle(.white)
+                                                }
+                                                .frame(width: 80, height: 50)
+                                                .offset(y: -40)
+                                            }
+                                        }
+                                        .zIndex(2)
+                                }
                             }
                         }
+                        .padding(.horizontal)
                     }
-                    .padding(.horizontal)
                 }
             }
+            .defaultScrollAnchor(.trailing)
         }
-        .defaultScrollAnchor(.trailing)
-//        .onAppear {
-//            api.locationStats = ["2024-08-21":"04:20:59.4398","2024-08-14":"06:21:01.901664","2024-08-04":"11:24:18.531457","2024-08-03":"13:02:41.865","2024-08-02":"05:54:59.202939","2024-08-01":"04:14:00.18825","2024-07-31":"11:49:18.01697","2024-07-30":"14:50:44.903031","2024-07-29":"10:25:00.933241","2024-07-28":"04:51:00.303256","2024-07-25":"10:21:00.042789","2024-06-28":"06:35:00.482362","2024-06-26":"06:31:58.689214","2024-06-25":"06:10:00.616138","2024-06-21":"06:04:00.045311","2024-06-18":"06:40:59.408136","2024-06-16":"06:19:59.995317","2024-06-14":"05:44:00.015018","2024-06-13":"06:23:03.651948","2024-06-12":"06:37:58.565964","2024-06-11":"06:11:00.41953","2024-06-07":"07:48:58.908038","2024-06-05":"08:42:59.980638","2024-05-25":"07:31:59.978881","2024-05-24":"09:59:00.267491","2024-05-23":"06:40:00.079178","2024-05-22":"08:53:00.216747"]
-//        }
     }
     
     func isDate(in location: [String: String], date: Date) -> Bool {

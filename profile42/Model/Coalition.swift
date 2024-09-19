@@ -44,12 +44,12 @@ struct Coalition: Codable {
             self.imageURL = "drop"
         case "Hearth":
             self.imageURL = "globe"
-        case "Wind":
+        case "Air":
             self.imageURL = "wind"
         case "Fire":
-            self.imageURL = "fire"
+            self.imageURL = "flame"
         default:
-            self.imageURL = "fire"
+            self.imageURL = "flame"
         }
     }
     

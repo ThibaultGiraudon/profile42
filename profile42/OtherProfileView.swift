@@ -30,23 +30,25 @@ struct OtherProfileView: View {
     var body: some View {
         VStack {
             if isLoading {
-                ProgressView()
+                ScrollView {
+                    ProgressView()
+                }
             } else {
                 ScrollView {
                     AsyncImage(url: URL(string: user.image.link)) { image in
                         image
                             .resizable()
-                            .scaledToFit()
+                            .scaledToFill()
                     } placeholder: {
                         ProgressView()
                     }
                     ZStack {
-                        AsyncImage(url: URL(string: currentCoalition.coverURL)) { image in
-                            image
-                                .resizable()
-                        } placeholder: {
-                            ProgressView()
-                        }
+//                        AsyncImage(url: URL(string: currentCoalition.coverURL)) { image in
+//                            image
+//                                .resizable()
+//                        } placeholder: {
+//                            ProgressView()
+//                        }
                         VStack {
                             VStack(alignment: .center) {
                                 Image(systemName: currentCoalition.imageURL)
@@ -109,9 +111,16 @@ struct OtherProfileView: View {
                             .padding()
                         }
                         .padding(.top)
+                        .background(
+                            AsyncImage(url: URL(string: currentCoalition.coverURL)) { image in
+                                image
+                                    .resizable()
+                            } placeholder: {
+                                ProgressView()
+                            }
+                        )
                     }
                     VStack(alignment: .center) {
-                        
                         VStack(alignment: .leading) {
                             HStack {
                                 Image(systemName: "envelope")

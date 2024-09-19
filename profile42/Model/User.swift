@@ -37,9 +37,9 @@ struct User: Codable {
     var achievements: [Achievement]
     let titles: [String]
     let titlesUsers: [String]
-    let partnerships: [String]
+    let partnerships: [Partnership]
     let patroned: [Patron]
-    let patroning: [String]
+    let patroning: [Patron]
     let expertisesUsers: [ExpertiseUser]
     let roles: [String]
     let campus: [Campus]
@@ -220,7 +220,7 @@ struct ProjectUser: Codable, Identifiable, Hashable {
     let finalMark: Int?
     let status: String
     let validated: Bool?
-    let currentTeamID: Int
+    let currentTeamID: Int?
     let project: Project
     let cursusIDs: [Int]
     let markedAt: String?
@@ -262,6 +262,44 @@ struct Achievement: Codable {
         case id, name, description, tier, kind, visible, image
         case nbrOfSuccess = "nbr_of_success"
         case usersURL = "users_url"
+    }
+}
+
+struct Partnership: Codable {
+    let id: Int
+    let name: String
+    let slug: String
+    let difficulty: Int
+    let url: String
+    let partnershipsUsersURL: String
+    let partnershipsSkills: [PartnershipSkill]
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case slug
+        case difficulty
+        case url
+        case partnershipsUsersURL = "partnerships_users_url"
+        case partnershipsSkills = "partnerships_skills"
+    }
+}
+
+struct PartnershipSkill: Codable {
+    let id: Int
+    let partnershipID: Int
+    let skillID: Int
+    let value: Double
+    let createdAt: String
+    let updatedAt: String
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case partnershipID = "partnership_id"
+        case skillID = "skill_id"
+        case value
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
     }
 }
 

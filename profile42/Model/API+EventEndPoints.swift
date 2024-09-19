@@ -25,7 +25,7 @@ extension API {
             switch self {
             case .events:
                 ["filter[future]": "true",
-                 "sort": "-begin_at"]
+                 "sort": "begin_at"]
             }
         }
         

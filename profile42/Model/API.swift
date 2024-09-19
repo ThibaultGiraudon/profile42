@@ -20,6 +20,9 @@ class API: ObservableObject {
     @Published var currentProjects = [ProjectUser]()
     @Published var evaluationLogs = [Correction]()
     @Published var events = [Event]()
+    @Published var history = [User]()
+    @Published var selectedUser = User()
+    @Published var activeTab: Tab = .profile
     
     func getFinihedProjects() -> [ProjectUser] {
         user.projectsUsers.filter { $0.validated != nil }

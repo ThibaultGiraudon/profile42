@@ -11,7 +11,7 @@ extension API {
     enum UserEndPoint: EndPoint {
         case user
         case coalition(id: Int)
-        case search(id: Int)
+        case search(login: String)
         case logtime(id: Int, date: String)
         
         var authorization: authorization { .user }
@@ -22,8 +22,8 @@ extension API {
                 return "/v2/me"
             case .coalition(let id):
                 return "/v2/users/\(id)/coalitions"
-            case .search(id: let id):
-                return "/v2/users/\(id)"
+            case .search(let login):
+                return "/v2/users/\(login)"
             case .logtime(id: let id):
                 return "/v2/users/\(id)/locations_stats"
             }

@@ -32,16 +32,18 @@ struct ProfileView: View {
     var body: some View {
         VStack {
             if isLoading {
-                ProgressView()
+                ScrollView {
+                    ProgressView()
+                }
             } else {
                 ScrollView {
                     ZStack {
-                        AsyncImage(url: URL(string: currentCoalition.coverURL)) { image in
-                            image
-                                .resizable()
-                        } placeholder: {
-                            ProgressView()
-                        }
+//                        AsyncImage(url: URL(string: currentCoalition.coverURL)) { image in
+//                            image
+//                                .resizable()
+//                        } placeholder: {
+//                            ProgressView()
+//                        }
                         VStack {
                             VStack(alignment: .center) {
                                 Image(systemName: currentCoalition.imageURL)
@@ -104,6 +106,14 @@ struct ProfileView: View {
                             .padding()
                         }
                         .padding(.top)
+                        .background(
+                            AsyncImage(url: URL(string: currentCoalition.coverURL)) { image in
+                                image
+                                    .resizable()
+                            } placeholder: {
+                                ProgressView()
+                            }
+                        )
                     }
                     VStack(alignment: .center) {
                         VStack(alignment: .leading) {
@@ -125,7 +135,7 @@ struct ProfileView: View {
                         selectedEvent = event
                         showingDetail = true
                     }
-                    .frame(height: .infinity)
+//                    .frame(maxHeight: .infinity)
                     LocationView(locationStats: locationStats, startDate: selectedCursus.beginAt)
                     HStack {
                         VStack {
@@ -207,10 +217,11 @@ struct ProfileView: View {
                                         }
                                     }
                                 }
-                                .frame(width: .infinity, height: 150)
+                                .frame(height: 150)
                                 .foregroundStyle(.white)
                                 ScrollView {
                                     Text(formatText(event.description))
+                                        .foregroundStyle(.black)
                                 }
                                 .padding(.horizontal)
                                 Divider()
@@ -239,32 +250,40 @@ struct ProfileView: View {
                             .background(.white)
                             .compositingGroup()
                             .shadow(radius: 10)
+                            .padding()
                         }
                     }
                 }
             }
         }
         .onAppear {
-            api.user = decode("user.json")
-            coalitions = decode("coalitions.json")
-            locationStats = decode("locationsStats.json")
-            currentCoalition = coalitions.first!
-            finishedProjects = api.user.projectsUsers.filter { $0.validated != nil }
-            currentProjects = api.user.projectsUsers.filter { $0.validated == nil }
-            evaluations = decode("evaluationLogs.json")
-            isLoading = false
-//            Task {
-//                do {
-//                    coalitions = try await api.fetchData(API.UserEndPoint.coalition(id: api.user.id))
-//                    currentCoalition = coalitions.first!
-//                    finishedProjects = api.user.projectsUsers.filter { $0.validated != nil }
-//                    currentProjects = api.user.projectsUsers.filter { $0.validated == nil }
-//                    locationStats = try await api.fetchData(API.LocationEndPoint.location(id: api.user.id, startDate: selectedCursus.beginAt))
-//                    isLoading = false
-//                } catch {
-//                    print(error)
-//                }
-//            }
+//            api.user = decode("user.json")
+//            coalitions = decode("coalitions.json")
+//            locationStats = decode("locationsStats.json")
+//            currentCoalition = coalitions.first!
+//            finishedProjects = api.user.projectsUsers.filter { $0.validated != nil }
+//            currentProjects = api.user.projectsUsers.filter { $0.validated == nil }
+//            evaluations = decode("evaluationLogs.json")
+//            isLoading = false
+            if api.coalitions.isEmpty {
+                Task {
+                    do {
+                        api.coalitions = try await api.fetchData(API.UserEndPoint.coalition(id: api.user.id))
+                        currentCoalition = api.coalitions.first!
+                        finishedProjects = api.user.projectsUsers.filter { $0.validated != nil }
+                        currentProjects = api.user.projectsUsers.filter { $0.validated == nil }
+                        api.locationStats = try await api.fetchData(API.LocationEndPoint.location(id: api.user.id, startDate: selectedCursus.beginAt))
+                        isLoading = false
+                    } catch {
+                        print(error)
+                    }
+                }
+            } else {
+                currentCoalition = api.coalitions.first!
+                finishedProjects = api.user.projectsUsers.filter { $0.validated != nil }
+                currentProjects = api.user.projectsUsers.filter { $0.validated == nil }
+                isLoading = false
+            }
         }
     }
     
