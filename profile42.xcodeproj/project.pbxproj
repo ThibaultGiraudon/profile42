@@ -35,6 +35,9 @@
 		CE80B7FD2C9B2A770056BBF1 /* events.json in Resources */ = {isa = PBXBuildFile; fileRef = CE80B7FC2C9B2A710056BBF1 /* events.json */; };
 		CE80B7FF2C9B41690056BBF1 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE80B7FE2C9B41690056BBF1 /* TestView.swift */; };
 		CE80B8012C9C46430056BBF1 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE80B8002C9C46430056BBF1 /* SearchView.swift */; };
+		CE80B83B2C9D57690056BBF1 /* Evaluation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE80B83A2C9D57690056BBF1 /* Evaluation.swift */; };
+		CE80B83D2C9D577B0056BBF1 /* API+EvaluationEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE80B83C2C9D577B0056BBF1 /* API+EvaluationEndPoint.swift */; };
+		CE80B83F2C9D5A990056BBF1 /* ProjectDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE80B83E2C9D5A990056BBF1 /* ProjectDetailView.swift */; };
 		CE95327B2C9829E50097F670 /* profile42App.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE95327A2C9829E50097F670 /* profile42App.swift */; };
 		CE95327D2C9829E50097F670 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE95327C2C9829E50097F670 /* ContentView.swift */; };
 		CE95327F2C9829E60097F670 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE95327E2C9829E60097F670 /* Assets.xcassets */; };
@@ -97,6 +100,9 @@
 		CE80B7FC2C9B2A710056BBF1 /* events.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = events.json; sourceTree = "<group>"; };
 		CE80B7FE2C9B41690056BBF1 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		CE80B8002C9C46430056BBF1 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		CE80B83A2C9D57690056BBF1 /* Evaluation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Evaluation.swift; sourceTree = "<group>"; };
+		CE80B83C2C9D577B0056BBF1 /* API+EvaluationEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+EvaluationEndPoint.swift"; sourceTree = "<group>"; };
+		CE80B83E2C9D5A990056BBF1 /* ProjectDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDetailView.swift; sourceTree = "<group>"; };
 		CE9532772C9829E50097F670 /* profile42.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = profile42.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE95327A2C9829E50097F670 /* profile42App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = profile42App.swift; sourceTree = "<group>"; };
 		CE95327C2C9829E50097F670 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -181,6 +187,7 @@
 				CE80B7E02C9AE37A0056BBF1 /* Correction.swift */,
 				CE80B7DE2C9AD2C60056BBF1 /* AllAchievementsView.swift */,
 				CE80B7CD2C99C65F0056BBF1 /* SkillsView.swift */,
+				CE80B83E2C9D5A990056BBF1 /* ProjectDetailView.swift */,
 				CE80B8002C9C46430056BBF1 /* SearchView.swift */,
 				CEA61EA12C99B01A004D5CC9 /* LocationView.swift */,
 				CE80B7D72C99DA8F0056BBF1 /* achievement.json */,
@@ -234,6 +241,8 @@
 				CEA61E992C99A4C2004D5CC9 /* API+UserEndPoints.swift */,
 				CE80B7F82C9B26040056BBF1 /* API+EventEndPoints.swift */,
 				CE4222D92C9858DE00A6ECD8 /* API.swift */,
+				CE80B83C2C9D577B0056BBF1 /* API+EvaluationEndPoint.swift */,
+				CE80B83A2C9D57690056BBF1 /* Evaluation.swift */,
 				CEA61E9D2C99A532004D5CC9 /* API+AuthEndPoint.swift */,
 				CEA61E9F2C99A561004D5CC9 /* API+Constants.swift */,
 				CEA61E9B2C99A502004D5CC9 /* API+LocationEndPoint.swift */,
@@ -404,12 +413,15 @@
 				CE80B7F92C9B26040056BBF1 /* API+EventEndPoints.swift in Sources */,
 				CE4222D82C98581E00A6ECD8 /* User.swift in Sources */,
 				CE80B7E72C9AE5DC0056BBF1 /* EvaluationLogsView.swift in Sources */,
+				CE80B83F2C9D5A990056BBF1 /* ProjectDetailView.swift in Sources */,
 				CE4222DC2C9877E600A6ECD8 /* Coalition.swift in Sources */,
 				CE80B7F32C9B03650056BBF1 /* OtherProfileView.swift in Sources */,
 				CE80B8012C9C46430056BBF1 /* SearchView.swift in Sources */,
 				CE4222DA2C9858DE00A6ECD8 /* API.swift in Sources */,
 				CE80B7F72C9B215B0056BBF1 /* EventView.swift in Sources */,
+				CE80B83D2C9D577B0056BBF1 /* API+EvaluationEndPoint.swift in Sources */,
 				CE95327B2C9829E50097F670 /* profile42App.swift in Sources */,
+				CE80B83B2C9D57690056BBF1 /* Evaluation.swift in Sources */,
 				CE80B7F52C9B20FA0056BBF1 /* ProfileView.swift in Sources */,
 				CE80B7CA2C99BD1E0056BBF1 /* ProjectView.swift in Sources */,
 				CE80B7FF2C9B41690056BBF1 /* TestView.swift in Sources */,

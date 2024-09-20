@@ -31,6 +31,7 @@ enum Tab {
     case profile
     case search
     case otherProfile
+    case project
 }
 
 struct ContentView: View {
@@ -75,6 +76,8 @@ struct ContentView: View {
                     ProfileView(api: api, events: api.events)
                 case .otherProfile:
                     OtherProfileView(api: api, user: api.selectedUser)
+                case .project:
+                    ProjectDetailView(api: api)
                 }
             } else {
                 Button("Login with OAuth 2.0") {
@@ -155,13 +158,9 @@ struct ContentView: View {
                         api.isLoading = true
                         let user: User = try await api.fetchData(API.UserEndPoint.user)
                         api.user = user
-                        api.events = try await api.fetchData(API.EventEndPoints.events(campusID: 9, cursusID: 21))
-//                        api.coalitions = try await api.fetchData(API.UserEndPoint.coalition(id: user.id))
-//                        api.currentCoalition = api.coalitions.first!
-//                        api.currentCursus = api.getCurrentCursus()
-//                        api.finishedProjects = api.getFinihedProjects()
-//                        api.currentProjects = api.getCurrentProjects()
-//                        api.locationStats = try await api.fetchData(API.LocationEndPoint.location(id: user.id, startDate: api.currentCursus.beginAt))
+                        api.currentCursus = api.getCurrentCursus()
+                        api.currentCampus = api.getCurrentCampus()
+                        api.events = try await api.fetchData(API.EventEndPoints.events(campusID: api.currentCampus.id, cursusID: api.currentCursus.cursusID))
                         api.isLoading = false
                     } catch {
                         print(error)

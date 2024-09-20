@@ -11,6 +11,7 @@ import SwiftUI
 extension API {
     enum EventEndPoints: EndPoint {
         case events(campusID: Int, cursusID: Int)
+        case subscribed(id: Int)
         
         var authorization: API.authorization { .user }
         
@@ -18,12 +19,17 @@ extension API {
             switch self {
             case .events(let campusID, let cursusID):
                 return "/v2/campus/\(campusID)/cursus/\(cursusID)/events"
+            case .subscribed(let id):
+                return "/v2/users/\(id)/events"
             }
         }
         
         var queryItems: [String : String]? {
             switch self {
             case .events:
+                ["filter[future]": "true",
+                 "sort": "begin_at"]
+            case .subscribed:
                 ["filter[future]": "true",
                  "sort": "begin_at"]
             }

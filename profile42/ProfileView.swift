@@ -135,7 +135,6 @@ struct ProfileView: View {
                         selectedEvent = event
                         showingDetail = true
                     }
-//                    .frame(maxHeight: .infinity)
                     LocationView(locationStats: locationStats, startDate: selectedCursus.beginAt)
                     HStack {
                         VStack {
@@ -153,7 +152,7 @@ struct ProfileView: View {
                         VStack {
                             switch selectedTab {
                             case .projects:
-                                ProjectView(finishedProjects: finishedProjects)
+                                ProjectView(api: api, finishedProjects: finishedProjects)
                             case .achievements:
                                 AchievementsView(user: api.user)
                             case .patronage:

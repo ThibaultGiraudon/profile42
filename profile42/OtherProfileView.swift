@@ -43,12 +43,6 @@ struct OtherProfileView: View {
                         ProgressView()
                     }
                     ZStack {
-//                        AsyncImage(url: URL(string: currentCoalition.coverURL)) { image in
-//                            image
-//                                .resizable()
-//                        } placeholder: {
-//                            ProgressView()
-//                        }
                         VStack {
                             VStack(alignment: .center) {
                                 Image(systemName: currentCoalition.imageURL)
@@ -152,7 +146,7 @@ struct OtherProfileView: View {
                         VStack {
                             switch selectedTab {
                             case .projects:
-                                ProjectView(finishedProjects: finishedProjects)
+                                ProjectView(api: api, finishedProjects: finishedProjects)
                             case .achievements:
                                 AchievementsView(user: user)
                             case .patronage:

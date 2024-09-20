@@ -14,6 +14,7 @@ class API: ObservableObject {
     @Published var coalitions = [Coalition]()
     @Published var currentCoalition = Coalition()
     @Published var currentCursus = CursusUser()
+    @Published var currentCampus = Campus()
     @Published var isLoading = true
     @Published var locationStats = [String: String]()
     @Published var finishedProjects = [ProjectUser]()
@@ -21,8 +22,23 @@ class API: ObservableObject {
     @Published var evaluationLogs = [Correction]()
     @Published var events = [Event]()
     @Published var history = [User]()
+    @Published var evaluations = [Evaluation]()
     @Published var selectedUser = User()
+    @Published var selectedProject = ProjectUser()
     @Published var activeTab: Tab = .profile
+    
+    
+    func getEvaluations(for id: Int) -> [Evaluation] {
+        var evaluations: [Evaluation] = []
+        
+        self.evaluations.forEach { evaluation in
+            if evaluation.team.id == id {
+                evaluations.append(evaluation)
+            }
+        }
+        
+        return evaluations
+    }
     
     func getFinihedProjects() -> [ProjectUser] {
         user.projectsUsers.filter { $0.validated != nil }
@@ -30,6 +46,10 @@ class API: ObservableObject {
     
     func getCurrentProjects() -> [ProjectUser] {
         user.projectsUsers.filter { $0.validated == nil }
+    }
+
+    func getCurrentCampus() -> Campus {
+        user.campus.first!
     }
     
     func getCurrentCursus() -> CursusUser {

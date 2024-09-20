@@ -228,6 +228,22 @@ struct ProjectUser: Codable, Identifiable, Hashable {
     let retriableAt: String?
     let createdAt: String
     let updatedAt: String
+    
+    init() {
+        self.id = 0
+        self.occurrence = 0
+        self.finalMark = nil
+        self.status = ""
+        self.validated = nil
+        self.currentTeamID = nil
+        self.project = .init(id: 0, name: "", slug: "", parentID: nil)
+        self.cursusIDs = []
+        self.markedAt = nil
+        self.marked = false
+        self.retriableAt = nil
+        self.createdAt = ""
+        self.updatedAt = ""
+    }
 
     enum CodingKeys: String, CodingKey {
         case id, occurrence, finalMark = "final_mark", status, validated = "validated?", currentTeamID = "current_team_id", project, cursusIDs = "cursus_ids", markedAt = "marked_at", marked, retriableAt = "retriable_at", createdAt = "created_at", updatedAt = "updated_at"
@@ -345,6 +361,15 @@ struct Campus: Codable {
     let language: Language
     let usersCount: Int
     let vogsphereID: Int
+    
+    init() {
+        self.id = 0
+        self.name = ""
+        self.timeZone = ""
+        self.language = .init(id: 0, name: "", identifier: "", createdAt: "", updatedAt: "")
+        self.usersCount = 0
+        self.vogsphereID = 0
+    }
 
     enum CodingKeys: String, CodingKey {
         case id, name, language
@@ -373,6 +398,13 @@ struct CampusUser: Codable {
     let userID: Int
     let campusID: Int
     let isPrimary: Bool
+    
+    init() {
+        self.id = 0
+        self.userID = 0
+        self.campusID = 0
+        self.isPrimary = false
+    }
 
     enum CodingKeys: String, CodingKey {
         case id

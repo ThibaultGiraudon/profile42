@@ -33,10 +33,8 @@ extension String {
 
 struct EventView: View {
     @StateObject var api: API
-    var events: [Event]
+    @State var events: [Event]
     var completion: ((Event) -> Void)
-    @State private var showingDetail: Bool = false
-    @State private var selectedEvent: Event?
     var body: some View {
         VStack {
             ScrollView(showsIndicators: false) {
@@ -45,6 +43,39 @@ struct EventView: View {
                         .font(.headline)
                         .foregroundStyle(.black)
                     Spacer()
+                    Text("ALL")
+                        .padding(5)
+                        .overlay {
+                            Rectangle()
+                                .stroke(.cyan, lineWidth: 1)
+                        }
+                        .foregroundStyle(.cyan)
+                        .onTapGesture {
+                            Task {
+                                do {
+                                    events = try await api.fetchData(API.EventEndPoints.events(campusID: api.currentCampus.id, cursusID: api.currentCursus.cursusID))
+                                } catch {
+                                    print(error)
+                                }
+                            }
+                        }
+                        .padding(.horizontal)
+                    Text("SUBSCRIBED")
+                        .padding(5)
+                        .overlay {
+                            Rectangle()
+                                .stroke(.cyan, lineWidth: 1)
+                        }
+                        .foregroundStyle(.cyan)
+                        .onTapGesture {
+                            Task {
+                                do {
+                                    events = try await api.fetchData(API.EventEndPoints.subscribed(id: api.user.id))
+                                } catch {
+                                    print(error)
+                                }
+                            }
+                        }
                 }
                 ForEach(events, id: \.id) { event in
                     var color: Color {
@@ -95,8 +126,6 @@ struct EventView: View {
                             .stroke(color, lineWidth: 2)
                     }
                     .onTapGesture {
-//                        showingDetail = true
-                        selectedEvent = event
                         completion(event)
                     }
                 }
@@ -104,88 +133,6 @@ struct EventView: View {
             .frame(height: 300)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .overlay {
-            if showingDetail {
-                if let event = selectedEvent {
-                    var color: Color {
-                        if event.kind == "hackathon" {
-                            return .green
-                        }
-                        if event.kind == "association" {
-                            return .purple
-                        }
-                        return .cyan
-                    }
-                    var dateFormatter: DateFormatter {
-                        let dateFormatter = DateFormatter()
-                        dateFormatter.dateFormat = "MMMM dd, yyyy 'at' HH:mm"
-                        return dateFormatter
-                    }
-                    VStack {
-                        ZStack {
-                            Color(color)
-                            VStack(alignment: .center) {
-                                VStack {
-                                    Text(event.kind.uppercased())
-                                    Text(event.name)
-                                        .font(.title2.bold())
-                                    Text(dateFormatter.string(from: event.beginAt.toDate()))
-                                }
-                                .padding()
-                                ZStack {
-                                    Color.black.opacity(0.3)
-                                    HStack {
-                                        Image(systemName: "calendar")
-                                        Text(getRemainingTime(event.beginAt))
-                                        Spacer()
-                                        Image(systemName: "clock")
-                                        Text(getDuration(event.beginAt, event.endAt))
-                                        Spacer()
-                                        Image(systemName: "mappin.and.ellipse")
-                                        Text(event.location)
-                                        Spacer()
-                                        Image(systemName: "person.crop.circle")
-                                        Text("\(event.nbrSubscribers) / \(event.maxPeople ?? 0)")
-                                    }
-                                    .padding()
-                                }
-                            }
-                        }
-                        .frame(width: .infinity, height: 150)
-                        .foregroundStyle(.white)
-                        ScrollView {
-                            Text(formatText(event.description))
-                        }
-                        .padding(.horizontal)
-                        Divider()
-                        HStack {
-                            Spacer()
-                            Button("Close") {
-                                showingDetail = false
-                            }
-                            .foregroundStyle(.cyan)
-                            .padding(10)
-                            .overlay {
-                                Rectangle()
-                                    .stroke(.gray, lineWidth: 1)
-                            }
-                            Button(event.maxPeople != nil && event.nbrSubscribers >= event.maxPeople! ? "The event is full" : "Subscribe") {
-                                // TODO subscribe to event
-                            }
-                            .foregroundStyle(.white)
-                            .padding(10)
-                            .background(Color.cyan.opacity(event.maxPeople != nil && event.nbrSubscribers >= event.maxPeople! ? 0.6 : 1))
-                            .disabled(event.maxPeople == nil ? false : event.nbrSubscribers >= event.maxPeople!)
-                        }
-                        .padding()
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(.white)
-                    .compositingGroup()
-                    .shadow(radius: 10)
-                }
-            }
-        }
         .padding()
     }
     

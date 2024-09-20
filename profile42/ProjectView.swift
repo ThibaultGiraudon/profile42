@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ProjectView: View {
+    @StateObject var api: API
     var finishedProjects: [ProjectUser]
     var body: some View {
         ScrollView {
@@ -27,13 +28,17 @@ struct ProjectView: View {
                         .bold()
                 }
                 .padding()
+                .onTapGesture {
+                    api.selectedProject = project
+                    api.activeTab = .project
+                }
             }
         }
     }
 }
 
 #Preview {
-    ProjectView(finishedProjects: [ProjectUser]())
+    ProjectView(api: API(), finishedProjects: [ProjectUser]())
 }
 
 // open and load data from project.json as ProjectUser
