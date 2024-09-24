@@ -40,10 +40,11 @@ struct ContentView: View {
     @State private var selectedTab: TabProfile = .projects
     private var authManager = AuthManager()
     @State private var showingWebView = false
+    @State private var offset: CGFloat = 0
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            if !api.isLoading {
+            if api.isLoggedIn {
                 HStack {
                     ZStack {
                         Color.gray
@@ -53,10 +54,18 @@ struct ContentView: View {
                             .padding(10)
                             .onTapGesture {
                                 api.activeTab = .profile
+                                api.navHistory.append(.profile)
+                                print(api.navHistory)
+                                print(api.navHistory.count)
                             }
                     }
                     .frame(width: 100, height: 70)
-                    Button(action: { api.activeTab = .search}) {
+                    Button {
+                        api.activeTab = .search
+                        api.navHistory.append(.search)
+                        print(api.navHistory)
+                        print(api.navHistory.count)
+                    } label: {
                         Image(systemName: "magnifyingglass")
                             .resizable()
                             .frame(width: 30, height: 30)
@@ -69,15 +78,49 @@ struct ContentView: View {
                         .foregroundStyle(.gray)
                         .padding()
                 }
-                switch api.activeTab {
-                case .search:
-                    SearchView(api: api)
-                case .profile:
-                    ProfileView(api: api, events: api.events)
-                case .otherProfile:
-                    OtherProfileView(api: api, user: api.selectedUser)
-                case .project:
-                    ProjectDetailView(api: api)
+                ZStack {
+//                    if api.navHistory.count > 1 {
+//                        
+//                        switch api.navHistory[api.navHistory.count - 2] {
+//                        case .search:
+//                            SearchView(api: api)
+//                        case .profile:
+//                            ProfileView(api: api, events: api.events)
+//                        case .otherProfile:
+//                            OtherProfileView(api: api, user: api.selectedUser)
+//                        case .project:
+//                            ProjectDetailView(api: api)
+//                        }
+//                    }
+                    
+                    ZStack {
+                        switch api.activeTab {
+                        case .search:
+                            SearchView(api: api)
+                        case .profile:
+                            ProfileView(api: api, events: api.events)
+                        case .otherProfile:
+                            OtherProfileView(api: api, user: api.selectedUser)
+                        case .project:
+                            ProjectDetailView(api: api)
+                        }
+                    }
+                    .background(.white)
+//                        .gesture(
+//                            DragGesture()
+//                                .onChanged { value in
+//                                    if api.navHistory.count > 1 && value.translation.width > 0 {
+//                                        offset = value.translation.width
+//                                    }
+//                                }
+//                                .onEnded { value in
+//                                    if api.navHistory.count > 1 && value.translation.width > 100 {
+//                                        goBack()
+//                                    }
+//                                    offset = 0
+//                                }
+//                        )
+//                        .offset(x: offset)
                 }
             } else {
                 Button("Login with OAuth 2.0") {
@@ -92,49 +135,21 @@ struct ContentView: View {
 //                    print(api.locationStats.count)
 //                    api.isLoading = false
                     showingWebView = true
-//                    Task {
-//                        do {
-//                            let callbackURLScheme = API.Constants.redirectURI.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
-//                            
-//                            guard let authURL = API.AuthEndPoint.authorize.url, let callBackURL = callbackURLScheme else { return }
-//                            
-//                            print("Auth URL: \(authURL)")
-//                            print("Callback URL: \(callBackURL)")
-//                            
-//                            let url = try await webAuthenticationSession.authenticate(using: authURL, callbackURLScheme: callBackURL)
-//                            
-//                            let queryItems = URLComponents(string: url.absoluteString)?.queryItems
-//                            guard let code = queryItems?.first(where: { $0.name == "code" })?.value else { return }
-//                            
-//                            print("Code: \(code)")
-//                            
-//                            let userToken = try await api.exchangeCodeForToken(endpoint: API.AuthEndPoint.user(code: code))
-//                            let applicationToken = try await api.exchangeCodeForToken(endpoint: API.AuthEndPoint.application)
-//                            
-//                            api.accessToken = userToken
-//                            api.applicationToken = applicationToken
-//                            print("User token: \(userToken)")
-//                            print("Application token: \(applicationToken)")
-//                        } catch {
-//                            print("Auth error")
-//                            print(error)
-//                        }
-//                    }
                 }
                 .sheet(isPresented: $showingWebView) {
                     AuthViewController(url: authManager.authURL) { code in
                         Task {
                             do {
-                                let userToken = try await api.exchangeCodeForToken(endpoint: API.AuthEndPoint.user(code: code))
-                                api.accessToken = userToken
-                                let applicationToken = try await api.exchangeCodeForToken(endpoint: API.AuthEndPoint.application)
-                                api.applicationToken = applicationToken
+                                let token: Token = try await api.getToken(endpoint: API.AuthEndPoint.user(code: code))
+                                api.token = token
+                                let applicationToken: ApplicationToken = try await api.getToken(endpoint: API.AuthEndPoint.application)
+                                api.applicationToken = applicationToken.accessToken
+                                api.isLoggedIn = true
                             } catch {
                                 print("Auth error")
                                 print(error)
                             }
                         }
-                        
                     }
                 }
             }
@@ -151,22 +166,17 @@ struct ContentView: View {
 //            print(api.locationStats.count)
 //            api.isLoading = false
 //        }
-        .onChange(of: api.accessToken) {
-            if !api.accessToken.isEmpty {
-                Task {
-                    do {
-                        api.isLoading = true
-                        let user: User = try await api.fetchData(API.UserEndPoint.user)
-                        api.user = user
-                        api.currentCursus = api.getCurrentCursus()
-                        api.currentCampus = api.getCurrentCampus()
-                        api.events = try await api.fetchData(API.EventEndPoints.events(campusID: api.currentCampus.id, cursusID: api.currentCursus.cursusID))
-                        api.isLoading = false
-                    } catch {
-                        print(error)
-                    }
-                }
-            }
+        .alert(isPresented: $api.showAlert) {
+            Alert(title: Text(api.alertTitle))
+        }
+    }
+    private func goBack() {
+        guard !api.navHistory.isEmpty else { return }
+        api.navHistory.removeLast()
+        if let lastTab = api.navHistory.last {
+            api.activeTab = lastTab
+        } else {
+            api.activeTab = .profile // Valeur par défaut si l'historique est vide
         }
     }
 }

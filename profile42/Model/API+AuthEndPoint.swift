@@ -12,9 +12,10 @@ extension API {
         case authorize
         case user(code: String)
         case application
-        
+        case refreshToken(token: String)
+
         var authorization: authorization { .user }
-        
+
         var path: String {
             switch self {
             case .authorize:
@@ -23,9 +24,11 @@ extension API {
                 return "/oauth/token"
             case .application:
                 return "/oauth/token"
+            case .refreshToken:
+                return "/oauth/token"
             }
         }
-        
+
         var queryItems: [String: String]? {
             switch self {
             case .authorize:
@@ -49,6 +52,14 @@ extension API {
                     "client_id": API.Constants.clientID,
                     "client_secret": API.Constants.clientSecret,
                     "scope": "public+projects+profile",
+                ]
+            case .refreshToken(let token):
+                return [
+                    "grant_type": "refresh_token",
+                    "client_id": API.Constants.clientID,
+                    "client_secret": API.Constants.clientSecret,
+                    "refresh_token": token,
+                    "redirect_uri": API.Constants.redirectURI,
                 ]
             }
         }

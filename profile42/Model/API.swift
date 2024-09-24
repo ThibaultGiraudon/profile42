@@ -7,9 +7,57 @@
 
 import Foundation
 
+struct Token: Codable {
+    let accessToken: String
+    let refreshToken: String
+    
+    enum CodingKeys: String, CodingKey {
+        case accessToken = "access_token"
+        case refreshToken = "refresh_token"
+    }
+}
+
+struct ApplicationToken: Codable {
+    let accessToken: String
+    
+    enum CodingKeys: String, CodingKey {
+        case accessToken = "access_token"
+    }
+}
+
 class API: ObservableObject {
-    @Published var accessToken: String = ""
-    @Published var applicationToken: String = ""
+    @Published var isLoggedIn: Bool = false {
+        didSet {
+            do {
+                let data = try JSONEncoder().encode(isLoggedIn)
+                UserDefaults.standard.set(data, forKey: "isLoggedIn")
+            } catch {
+                print(error)
+            }
+        }
+    }
+    @Published var token: Token = Token(accessToken: "", refreshToken: "") {
+        didSet {
+            do {
+                let data = try JSONEncoder().encode(token)
+                UserDefaults.standard.set(data, forKey: "token")
+            } catch {
+                print(error)
+            }
+        }
+    }
+    @Published var applicationToken: String = "" {
+        didSet {
+            do {
+                let data = try JSONEncoder().encode(applicationToken)
+                UserDefaults.standard.set(data, forKey: "applicationToken")
+            } catch {
+                print(error)
+            }
+        }
+    }
+    @Published var alertTitle: String = ""
+    @Published var showAlert: Bool = false
     @Published var user = User()
     @Published var coalitions = [Coalition]()
     @Published var currentCoalition = Coalition()
@@ -21,12 +69,63 @@ class API: ObservableObject {
     @Published var currentProjects = [ProjectUser]()
     @Published var evaluationLogs = [Correction]()
     @Published var events = [Event]()
-    @Published var history = [User]()
+    @Published var history = [User]()  {
+        didSet {
+            do {
+                let data = try JSONEncoder().encode(history)
+                UserDefaults.standard.set(data, forKey: "history")
+            } catch {
+                print(error)
+            }
+        }
+    }
     @Published var evaluations = [Evaluation]()
     @Published var selectedUser = User()
     @Published var selectedProject = ProjectUser()
     @Published var activeTab: Tab = .profile
+    @Published var navHistory: [Tab] = [.profile]
+    @Published var failedCount: Int = 0
     
+    init() {
+        if let data = UserDefaults.standard.data(forKey: "isLoggedIn") {
+            do {
+                isLoggedIn = try JSONDecoder().decode(Bool.self, from: data)
+                print(" logged in: \(isLoggedIn)")
+            } catch {
+                print(error)
+            }
+        } else {
+            isLoggedIn = false
+        }
+        if let data = UserDefaults.standard.data(forKey: "token") {
+            do {
+                token = try JSONDecoder().decode(Token.self, from: data)
+            } catch {
+                print(error)
+            }
+        } else {
+            token = Token(accessToken: "", refreshToken: "")
+        }
+        if let data = UserDefaults.standard.data(forKey: "applicationToken") {
+            do {
+                applicationToken = try JSONDecoder().decode(String.self, from: data)
+            } catch {
+                print(error)
+            }
+        } else {
+            applicationToken = ""
+        }
+        
+        if let data = UserDefaults.standard.data(forKey: "history") {
+            do {
+                history = try JSONDecoder().decode([User].self, from: data)
+            } catch {
+                print(error)
+            }
+        } else {
+            history = []
+        }
+    }
     
     func getEvaluations(for id: Int) -> [Evaluation] {
         var evaluations: [Evaluation] = []
@@ -71,21 +170,45 @@ class API: ObservableObject {
         
         var request = URLRequest(url: apiURL)
         request.httpMethod = "GET"
-        print(accessToken)
+        print(token.accessToken)
         print(applicationToken)
-        request.addValue("Bearer \(endpoint.authorization == .application ? applicationToken : accessToken)", forHTTPHeaderField: "Authorization")
+        request.addValue("Bearer \(endpoint.authorization == .application ? applicationToken : token.accessToken)", forHTTPHeaderField: "Authorization")
         
         let (data, response) = try await URLSession.shared.data(for: request)
         
         guard (response as? HTTPURLResponse)?.statusCode == 200 else {
-            print("Server error")
-            print(apiURL)
-            print((response as? HTTPURLResponse) ?? "Error")
-            throw URLError(.badServerResponse)
+            switch (response as? HTTPURLResponse)?.statusCode {
+            case 400:
+                throw API.Error.malformed
+            case 401:
+                failedCount += 1
+                if failedCount >= 3 {
+                    throw API.Error.unauthorized
+                } else {
+                    token = try await getToken(endpoint: API.AuthEndPoint.refreshToken(token: token.refreshToken))
+                    let appToken: ApplicationToken = try await getToken(endpoint: API.AuthEndPoint.application)
+                    applicationToken = appToken.accessToken
+                    return try await fetchData(endpoint)
+                }
+            case 403:
+                throw API.Error.forbidden
+            case 404:
+                throw API.Error.notFound
+            case 422:
+                throw API.Error.unprocessableEntity
+            case 429:
+                try await Task.sleep(for: .seconds(1))
+                return try await fetchData(endpoint)
+            case 500:
+                throw API.Error.internalServerError
+            default:
+                throw API.Error.internalServerError
+            }
         }
         
         do {
             let decoded = try JSONDecoder().decode(T.self, from: data)
+            failedCount = 0
             return decoded
         } catch {
             print("Decoding error")
@@ -93,7 +216,7 @@ class API: ObservableObject {
         }
     }
     
-    func exchangeCodeForToken(endpoint: API.AuthEndPoint) async throws -> String {
+    func getToken<T: Decodable>(endpoint: API.AuthEndPoint) async throws -> T {
         guard let tokenURL = endpoint.url else {
             print("URL error")
             throw URLError(.badURL)
@@ -101,7 +224,7 @@ class API: ObservableObject {
         var request = URLRequest(url: tokenURL)
         request.httpMethod = "POST"
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-
+        
         let (data, response) = try await URLSession.shared.data(for: request)
         
         guard (response as? HTTPURLResponse)?.statusCode == 200 else {
@@ -110,17 +233,8 @@ class API: ObservableObject {
             throw URLError(.badServerResponse)
         }
         
-        do {
-            if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-               let token = json["access_token"] as? String {
-                return token
-            }
-        } catch {
-            print("Error parsing token response")
-        }
-        
-        return ""
+        return try JSONDecoder().decode(T.self, from: data)
     }
-    
 }
+
 

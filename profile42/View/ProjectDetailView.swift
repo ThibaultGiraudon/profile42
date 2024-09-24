@@ -18,8 +18,8 @@ struct ProjectDetailView: View {
                 .padding(.vertical)
             VStack(alignment: .center) {
                 HStack {
-                    Image(systemName: api.selectedProject.validated! ? "checkmark" : "xmark")
-                    Text(api.selectedProject.validated! ? "SUCCESS" : "FAILURE")
+                    Image(systemName: api.selectedProject.validated != nil && api.selectedProject.validated! ? "checkmark" : "xmark")
+                    Text(api.selectedProject.validated != nil && api.selectedProject.validated! ? "SUCCESS" : "FAILURE")
                 }
                 HStack(spacing: 0) {
                     Text("\(api.selectedProject.finalMark ?? 0)")
@@ -30,7 +30,7 @@ struct ProjectDetailView: View {
             .foregroundColor(.white)
             .padding(.vertical)
             .frame(maxWidth: .infinity)
-            .background(api.selectedProject.validated! ? .green : .red)
+            .background(api.selectedProject.validated != nil && api.selectedProject.validated! ? .green : .red)
             if firstEvaluation.id != 0 {
                 ScrollView(showsIndicators: false) {
                     VStack(alignment: .leading) {
@@ -83,15 +83,14 @@ struct ProjectDetailView: View {
                                     Text(evaluation.corrector.login.uppercased())
                                         .font(.caption.bold())
                                         .foregroundStyle(.cyan)
-                                    // TODO add X MONTH AGO
-                                    Text(" X MONTH AGO")
+                                    Text(" \(getDuration(from: evaluation.updatedAt)) AGO")
                                         .font(.caption.bold())
                                         .foregroundStyle(.gray)
                                     Spacer()
                                     Image(systemName: (evaluation.finalMark ?? 0) >= 80 ? "checkmark.circle" : "xmark.circle")
                                         .foregroundStyle((evaluation.finalMark ?? 0) >= 80 ? .green : .red)
                                         .font(.callout)
-                                    Text(" \(evaluation.finalMark ?? 0)")
+                                    Text(" \(evaluation.finalMark ?? 0)%")
                                         .font(.callout)
                                         .foregroundStyle((evaluation.finalMark ?? 0) >= 80 ? .green : .red)
                                 }
@@ -104,8 +103,7 @@ struct ProjectDetailView: View {
                                         .background(.gray.opacity(0.2))
                                     Spacer()
                                 }
-                                // TODO add X MONTH AGO
-                                Text("YOUR FEEDBACK, X MONTH AGO")
+                                Text("YOUR FEEDBACK, \(getDuration(from: firstEvaluation.updatedAt)) AGO")
                                     .font(.caption)
                                     .foregroundStyle(.gray.opacity(0.5))
                                     .padding(.vertical, 5)
@@ -145,16 +143,41 @@ struct ProjectDetailView: View {
             Task {
                 do {
                     api.evaluations = try await api.fetchData(API.EvalutaionEndPoint.corrected(id: api.selectedUser.id == 0 ? api.user.id : api.selectedUser.id))
+//                    api.evaluations = decode("evaluation.json")
                     evaluations = api.getEvaluations(for: api.selectedProject.currentTeamID ?? 0)
                     if !evaluations.isEmpty {
                         firstEvaluation = evaluations.first!
                     }
                 } catch {
                     api.activeTab = .profile
+                    api.navHistory.append(.profile)
+                    print(error)
                 }
             }
         }
     }
+    
+    func getDuration(from date: String) -> String {
+        let duration = Calendar.current.dateComponents([.minute], from: date.toDate(), to: Date()).minute ?? 0
+        if duration > 60 * 24 * 365 {
+            let years = duration / (60 * 24 * 365)
+            return String(years) + " YEARS"
+        }
+        if duration > 60 * 24 * 30 {
+            let months = duration / (60 * 24 * 30)
+            return String(months) + " MONTHS"
+        }
+        if duration > 60 * 24 {
+            let days = duration / (60 * 24)
+            return String(days) + " DAYS"
+        }
+        if duration > 60 {
+            let days = duration / 24
+            return String(days) + " HOURS"
+        }
+        return String(duration) + " MINUTES"
+    }
+    
 }
 
 enum MyError: Error {

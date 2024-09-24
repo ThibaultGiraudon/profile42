@@ -29,6 +29,8 @@ struct ProfileView: View {
     @State private var evaluations: [Correction] = []
     @State private var selectedEvent: Event?
     @State private var showingDetail: Bool = false
+    @State private var showAlert: Bool = false
+    @State private var alertMessage: String = ""
     var body: some View {
         VStack {
             if isLoading {
@@ -255,18 +257,18 @@ struct ProfileView: View {
                 }
             }
         }
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+        }
         .onAppear {
-//            api.user = decode("user.json")
-//            coalitions = decode("coalitions.json")
-//            locationStats = decode("locationsStats.json")
-//            currentCoalition = coalitions.first!
-//            finishedProjects = api.user.projectsUsers.filter { $0.validated != nil }
-//            currentProjects = api.user.projectsUsers.filter { $0.validated == nil }
-//            evaluations = decode("evaluationLogs.json")
-//            isLoading = false
             if api.coalitions.isEmpty {
                 Task {
                     do {
+                        let user: User = try await api.fetchData(API.UserEndPoint.user)
+                        api.user = user
+                        api.currentCursus = api.getCurrentCursus()
+                        api.currentCampus = api.getCurrentCampus()
+                        api.events = try await api.fetchData(API.EventEndPoints.events(campusID: api.currentCampus.id, cursusID: api.currentCursus.cursusID))
                         api.coalitions = try await api.fetchData(API.UserEndPoint.coalition(id: api.user.id))
                         currentCoalition = api.coalitions.first!
                         finishedProjects = api.user.projectsUsers.filter { $0.validated != nil }
@@ -274,7 +276,8 @@ struct ProfileView: View {
                         api.locationStats = try await api.fetchData(API.LocationEndPoint.location(id: api.user.id, startDate: selectedCursus.beginAt))
                         isLoading = false
                     } catch {
-                        print(error)
+                        alertMessage = error.localizedDescription
+                        showAlert = true
                     }
                 }
             } else {

@@ -263,13 +263,13 @@ struct UserTeam: Codable {
 }
 
 struct Feedback: Codable {
-    let id: Int
-    let user: FeedbackUser
-    let feedbackableType: String
-    let feedbackableID: Int
-    let comment: String
-    let rating: Int
-    let createdAt: String
+    let id: Int?
+    let user: FeedbackUser?
+    let feedbackableType: String?
+    let feedbackableID: Int?
+    let comment: String?
+    let rating: Int?
+    let createdAt: String?
 
     enum CodingKeys: String, CodingKey {
         case id
