@@ -91,8 +91,10 @@ struct AchievementsView: View {
                     VStack(alignment: .leading) {
                         Text(achievement.name)
                             .font(.headline)
+                            .foregroundStyle(.black)
                         Text(achievement.description)
                             .font(.subheadline)
+                            .foregroundStyle(.black)
                         Spacer()
                         HStack {
                             Image(systemName: "checkmark.circle.fill")

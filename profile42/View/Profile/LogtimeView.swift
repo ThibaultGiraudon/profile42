@@ -39,6 +39,7 @@ struct LogtimeView: View {
                     .foregroundStyle(.black)
                 Spacer()
             }
+            .padding(.horizontal)
             ScrollView(.horizontal) {
                 HStack {
                     ForEach(generateMonths(back: back, from: date), id: \.self) { month in

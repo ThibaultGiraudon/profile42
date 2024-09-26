@@ -190,7 +190,7 @@ struct Team: Codable {
     let locked: Bool
     let validated: Bool
     let closed: Bool
-    let repoURL: String
+    let repoURL: String?
     let repoUUID: String
     let lockedAt: String
     let closedAt: String

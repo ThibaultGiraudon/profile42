@@ -21,7 +21,7 @@ struct Coalition: Codable {
         self.id = 0
         self.name = ""
         self.slug = ""
-        self.imageURL = ""
+        self.imageURL = "drop"
         self.coverURL = ""
         self.color = ""
         self.score = 0

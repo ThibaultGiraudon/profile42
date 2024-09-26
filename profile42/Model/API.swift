@@ -82,6 +82,7 @@ class API: ObservableObject {
     @Published var evaluations = [Evaluation]()
     @Published var selectedUser = User()
     @Published var selectedProject = ProjectUser()
+    @Published var selectedEvent = Event()
     @Published var activeTab: Tab = .profile
     @Published var navHistory: [Tab] = [.profile]
     @Published var failedCount: Int = 0
@@ -146,14 +147,14 @@ class API: ObservableObject {
         user.projectsUsers.filter { $0.validated == nil }
     }
 
-    func getCurrentCampus() -> Campus {
-        user.campus.first!
+    func getCurrentCampus(from allCampus: [Campus]) -> Campus {
+        allCampus.first!
     }
     
-    func getCurrentCursus() -> CursusUser {
-        var lastCursus = user.cursusUsers.first!
+    func getCurrentCursus(from allCursus: [CursusUser]) -> CursusUser {
+        var lastCursus = allCursus.first!
 
-        for cursusUser in user.cursusUsers {
+        for cursusUser in allCursus {
             if cursusUser.beginAt > lastCursus.beginAt {
                 lastCursus = cursusUser
             }
@@ -169,13 +170,12 @@ class API: ObservableObject {
         
         var request = URLRequest(url: apiURL)
         request.httpMethod = "GET"
-        print(token.accessToken)
-        print(applicationToken)
         request.addValue("Bearer \(endpoint.authorization == .application ? applicationToken : token.accessToken)", forHTTPHeaderField: "Authorization")
         
         let (data, response) = try await URLSession.shared.data(for: request)
         
         guard (response as? HTTPURLResponse)?.statusCode == 200 else {
+            print(apiURL)
             switch (response as? HTTPURLResponse)?.statusCode {
             case 400:
                 throw API.Error.malformed
@@ -210,6 +210,7 @@ class API: ObservableObject {
             failedCount = 0
             return decoded
         } catch {
+            print(error)
             throw API.Error.responseError
         }
     }
@@ -224,8 +225,6 @@ class API: ObservableObject {
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         
         let (data, response) = try await URLSession.shared.data(for: request)
-        
-        print(type(of: response))
         
         guard (response as? HTTPURLResponse)?.statusCode == 200 else {
             switch (response as? HTTPURLResponse)?.statusCode {
@@ -257,6 +256,14 @@ class API: ObservableObject {
             }
         }
         return try JSONDecoder().decode(T.self, from: data)
+    }
+    
+    func logOut() {
+        isLoggedIn = false
+        UserDefaults.standard.removeObject(forKey: "isLoggedIn")
+        UserDefaults.standard.removeObject(forKey: "token")
+        UserDefaults.standard.removeObject(forKey: "applicationToken")
+        UserDefaults.standard.removeObject(forKey: "history")
     }
     
 }

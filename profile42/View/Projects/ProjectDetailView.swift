@@ -59,7 +59,7 @@ struct ProjectDetailView: View {
                             .font(.callout)
                             .foregroundStyle(.gray.opacity(0.5))
                         HStack(spacing: 0) {
-                            Text(firstEvaluation.team.repoURL)
+                            Text(firstEvaluation.team.repoURL ?? "")
                                 .padding()
                                 .background(.gray.opacity(0.1))
                                 .lineLimit(1)
@@ -140,6 +140,7 @@ struct ProjectDetailView: View {
         }
         .padding()
         .onAppear {
+            api.isLoading = true
             Task {
                 do {
                     api.evaluations = try await api.fetchData(API.EvalutaionEndPoint.corrected(id: api.selectedUser.id == 0 ? api.user.id : api.selectedUser.id))
@@ -148,11 +149,13 @@ struct ProjectDetailView: View {
                         firstEvaluation = evaluations.first!
                     }
                 } catch {
-                    api.activeTab = .profile
-                    api.navHistory.append(.profile)
                     print(error)
+                    api.activeTab = .profile
+                    api.alertTitle = error.localizedDescription
+                    api.showAlert = true
                 }
             }
+            api.isLoading = false
         }
     }
     

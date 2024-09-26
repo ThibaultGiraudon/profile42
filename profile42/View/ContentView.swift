@@ -32,6 +32,7 @@ enum Tab {
     case search
     case otherProfile
     case project
+    case event
 }
 
 struct ContentView: View {
@@ -46,24 +47,22 @@ struct ContentView: View {
             if api.isLoggedIn {
                 HStack {
                     ZStack {
-                        Color.gray
+                        Color("CustomBlack")
                         Image("42")
                             .resizable()
                             .frame(width: 50, height: 50)
                             .padding(10)
                             .onTapGesture {
-                                api.activeTab = .profile
-                                api.navHistory.append(.profile)
-                                print(api.navHistory)
-                                print(api.navHistory.count)
+                                if !api.isLoading {
+                                    api.activeTab = .profile
+                                    api.navHistory.append(.profile)
+                                }
                             }
                     }
                     .frame(width: 100, height: 70)
                     Button {
                         api.activeTab = .search
                         api.navHistory.append(.search)
-                        print(api.navHistory)
-                        print(api.navHistory.count)
                     } label: {
                         Image(systemName: "magnifyingglass")
                             .resizable()
@@ -71,55 +70,65 @@ struct ContentView: View {
                             .foregroundStyle(.cyan)
                             .padding()
                     }
+                    .disabled(api.isLoading)
                     Spacer()
                     Text(api.user.login)
                         .font(.title2.bold())
                         .foregroundStyle(.gray)
                         .padding()
+                        .contextMenu {
+                            Button("View my profile") {
+                                api.selectedUser = api.user
+                                api.activeTab = .otherProfile
+                            }
+                            .disabled(api.isLoading)
+                            Button("Logout", role: .destructive) {
+                                api.logOut()
+                            }
+                            .disabled(api.isLoading)
+                        }
                 }
                 ZStack {
-//                    if api.navHistory.count > 1 {
-//                        
-//                        switch api.navHistory[api.navHistory.count - 2] {
-//                        case .search:
-//                            SearchView(api: api)
-//                        case .profile:
-//                            ProfileView(api: api, events: api.events)
-//                        case .otherProfile:
-//                            OtherProfileView(api: api, user: api.selectedUser)
-//                        case .project:
-//                            ProjectDetailView(api: api)
-//                        }
-//                    }
-                    
                     ZStack {
                         switch api.activeTab {
                         case .search:
                             SearchView(api: api)
                         case .profile:
-                            ProfileView(api: api, events: api.events)
+                            ProfileView(api: api, user: api.user)
                         case .otherProfile:
-                            OtherProfileView(api: api, user: api.selectedUser)
+                            ProfileView(api: api, user: api.selectedUser)
                         case .project:
                             ProjectDetailView(api: api)
+                        case .event:
+                            EventDetailView(api: api, event: api.selectedEvent)
                         }
                     }
                     .background(.white)
-//                        .gesture(
-//                            DragGesture()
-//                                .onChanged { value in
-//                                    if api.navHistory.count > 1 && value.translation.width > 0 {
-//                                        offset = value.translation.width
-//                                    }
-//                                }
-//                                .onEnded { value in
-//                                    if api.navHistory.count > 1 && value.translation.width > 100 {
-//                                        goBack()
-//                                    }
-//                                    offset = 0
-//                                }
-//                        )
-//                        .offset(x: offset)
+                    .offset(x: offset)
+                        .gesture(
+                            DragGesture()
+                                .onChanged { value in
+                                    if api.navHistory.count > 1 && value.translation.width > 0 {
+                                        offset = value.translation.width
+                                    }
+                                }
+                                .onEnded { value in
+                                    if api.navHistory.count > 1 && value.translation.width > 100 {
+                                        goBack()
+                                    }
+                                    offset = 0
+                                }
+                        )
+                }
+                .overlay {
+                    if api.isLoading {
+                        GeometryReader { geometry in
+                            ProgressView()
+                                .frame(width: geometry.size.width, height: geometry.size.height)
+                                .ignoresSafeArea(.all)
+                                .background(.white)
+                        }
+                    }
                 }
             } else {
                 Button("Login with OAuth 2.0") {
@@ -133,13 +142,36 @@ struct ContentView: View {
                                 api.token = token
                                 let applicationToken: ApplicationToken = try await api.getToken(endpoint: API.AuthEndPoint.application)
                                 api.applicationToken = applicationToken.accessToken
-                                api.isLoggedIn = true
+                                showingWebView = false
                             } catch {
-                                print(error)
+                                api.alertTitle = error.localizedDescription
+                                api.showAlert = true
                             }
                         }
                     }
                 }
+            }
+        }
+        .onChange(of: api.applicationToken) {
+            if api.coalitions.isEmpty {
+                api.isLoading = true
+                Task {
+                    do {
+                        let user: User = try await api.fetchData(API.UserEndPoint.user)
+                        api.user = user
+                        api.currentCursus = api.getCurrentCursus(from: user.cursusUsers)
+                        api.currentCampus = api.getCurrentCampus(from: user.campus)
+                        api.events = try await api.fetchData(API.EventEndPoints.events(campusID: api.currentCampus.id, cursusID: api.currentCursus.cursusID))
+                        api.coalitions = try await api.fetchData(API.CoalitionEndPoint.coalition(id: user.id))
+                        api.isLoggedIn = true
+                    } catch {
+                        print(error)
+                        api.alertTitle = error.localizedDescription
+                        api.showAlert = true
+                        api.activeTab = .profile
+                    }
+                }
+                api.isLoading = false
             }
         }
         .alert(isPresented: $api.showAlert) {

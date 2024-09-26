@@ -54,7 +54,7 @@ struct CorrectionPointsView: View {
                                     .font(.title2.bold())
                                     .foregroundStyle(evaluation.sum > 0 ? .green : .red)
                                     .frame(width: 30, height: 30)
-                                    .background(evaluation.sum > 0 ? .green.opacity(0.2) : .red.opacity(0.2))
+                                    .background(evaluation.sum > 0 ? .green.opacity(0.1) : .red.opacity(0.1))
                                 Spacer()
                             }
                             VStack(alignment: .leading) {
@@ -64,17 +64,22 @@ struct CorrectionPointsView: View {
                             }
                         }
                         .padding()
+                        Divider()
                     }
                 }
             }
             .onAppear {
+                api.isLoading = true
                 Task {
                     do {
                         evaluationLogs = try await api.fetchData(API.CorrectionEndpoint.correction(id: user.id))
                     } catch {
-                        
+                        api.alertTitle = error.localizedDescription
+                        api.showAlert = true
+                        api.activeTab = .profile
                     }
                 }
+                api.isLoading = false
             }
         }
     }

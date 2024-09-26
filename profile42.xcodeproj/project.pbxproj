@@ -21,7 +21,7 @@
 		CE80B7E32C9AE3DC0056BBF1 /* API+Correction.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE80B7E22C9AE3DC0056BBF1 /* API+Correction.swift */; };
 		CE80B7E72C9AE5DC0056BBF1 /* CorrectionPointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE80B7E62C9AE5DC0056BBF1 /* CorrectionPointsView.swift */; };
 		CE80B7F32C9B03650056BBF1 /* OtherProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE80B7F22C9B03650056BBF1 /* OtherProfileView.swift */; };
-		CE80B7F52C9B20FA0056BBF1 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE80B7F42C9B20FA0056BBF1 /* ProfileView.swift */; };
+		CE80B7F52C9B20FA0056BBF1 /* OldProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE80B7F42C9B20FA0056BBF1 /* OldProfileView.swift */; };
 		CE80B7F72C9B215B0056BBF1 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE80B7F62C9B215B0056BBF1 /* EventView.swift */; };
 		CE80B7F92C9B26040056BBF1 /* API+EventEndPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE80B7F82C9B26040056BBF1 /* API+EventEndPoints.swift */; };
 		CE80B7FB2C9B27100056BBF1 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE80B7FA2C9B27100056BBF1 /* Event.swift */; };
@@ -46,6 +46,8 @@
 		CEA61EA22C99B01A004D5CC9 /* LogtimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA61EA12C99B01A004D5CC9 /* LogtimeView.swift */; };
 		CEC483B82CA306EC006A9E3D /* API+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC483B72CA306EC006A9E3D /* API+Error.swift */; };
 		CEC483C32CA579B9006A9E3D /* API+CoalitionEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC483C22CA579B9006A9E3D /* API+CoalitionEndPoint.swift */; };
+		CEC483C72CA59403006A9E3D /* EventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC483C62CA59403006A9E3D /* EventDetailView.swift */; };
+		CEC483CB2CA59E35006A9E3D /* View+display.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC483CA2CA59E35006A9E3D /* View+display.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,7 +81,7 @@
 		CE80B7E22C9AE3DC0056BBF1 /* API+Correction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Correction.swift"; sourceTree = "<group>"; };
 		CE80B7E62C9AE5DC0056BBF1 /* CorrectionPointsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorrectionPointsView.swift; sourceTree = "<group>"; };
 		CE80B7F22C9B03650056BBF1 /* OtherProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherProfileView.swift; sourceTree = "<group>"; };
-		CE80B7F42C9B20FA0056BBF1 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		CE80B7F42C9B20FA0056BBF1 /* OldProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldProfileView.swift; sourceTree = "<group>"; };
 		CE80B7F62C9B215B0056BBF1 /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		CE80B7F82C9B26040056BBF1 /* API+EventEndPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+EventEndPoints.swift"; sourceTree = "<group>"; };
 		CE80B7FA2C9B27100056BBF1 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
@@ -108,6 +110,8 @@
 		CEA61EA12C99B01A004D5CC9 /* LogtimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogtimeView.swift; sourceTree = "<group>"; };
 		CEC483B72CA306EC006A9E3D /* API+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Error.swift"; sourceTree = "<group>"; };
 		CEC483C22CA579B9006A9E3D /* API+CoalitionEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+CoalitionEndPoint.swift"; sourceTree = "<group>"; };
+		CEC483C62CA59403006A9E3D /* EventDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailView.swift; sourceTree = "<group>"; };
+		CEC483CA2CA59E35006A9E3D /* View+display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+display.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -219,6 +223,7 @@
 				CE95327C2C9829E50097F670 /* ContentView.swift */,
 				CE80B8002C9C46430056BBF1 /* SearchView.swift */,
 				CE80B7FE2C9B41690056BBF1 /* TestView.swift */,
+				CEC483CA2CA59E35006A9E3D /* View+display.swift */,
 				CEC483BA2CA57841006A9E3D /* Achievements */,
 				CEC483BB2CA57851006A9E3D /* Projects */,
 				CEC483BC2CA578EC006A9E3D /* Profile */,
@@ -249,8 +254,9 @@
 			isa = PBXGroup;
 			children = (
 				CEA61EA12C99B01A004D5CC9 /* LogtimeView.swift */,
+				CEC483C62CA59403006A9E3D /* EventDetailView.swift */,
 				CE80B7F62C9B215B0056BBF1 /* EventView.swift */,
-				CE80B7F42C9B20FA0056BBF1 /* ProfileView.swift */,
+				CE80B7F42C9B20FA0056BBF1 /* OldProfileView.swift */,
 				CE80B7F22C9B03650056BBF1 /* OtherProfileView.swift */,
 				CE80B7CD2C99C65F0056BBF1 /* SkillsView.swift */,
 				CE80B7E62C9AE5DC0056BBF1 /* CorrectionPointsView.swift */,
@@ -455,12 +461,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEC483C72CA59403006A9E3D /* EventDetailView.swift in Sources */,
 				CE80B7CE2C99C65F0056BBF1 /* SkillsView.swift in Sources */,
 				CEA61E9C2C99A502004D5CC9 /* API+LogtimeEndPoint.swift in Sources */,
 				CEA61EA22C99B01A004D5CC9 /* LogtimeView.swift in Sources */,
 				CE80B7E12C9AE37A0056BBF1 /* Correction.swift in Sources */,
 				CEA61EA02C99A561004D5CC9 /* API+Constants.swift in Sources */,
 				CE95327D2C9829E50097F670 /* ContentView.swift in Sources */,
+				CEC483CB2CA59E35006A9E3D /* View+display.swift in Sources */,
 				CE80B7D42C99D00A0056BBF1 /* CurrentProjectView.swift in Sources */,
 				CEA61E9A2C99A4CE004D5CC9 /* API+UserEndPoints.swift in Sources */,
 				CE80B7DF2C9AD2C60056BBF1 /* AllAchievementsView.swift in Sources */,
@@ -482,7 +490,7 @@
 				CE80B83D2C9D577B0056BBF1 /* API+EvaluationEndPoint.swift in Sources */,
 				CE95327B2C9829E50097F670 /* profile42App.swift in Sources */,
 				CE80B83B2C9D57690056BBF1 /* Evaluation.swift in Sources */,
-				CE80B7F52C9B20FA0056BBF1 /* ProfileView.swift in Sources */,
+				CE80B7F52C9B20FA0056BBF1 /* OldProfileView.swift in Sources */,
 				CE80B7CA2C99BD1E0056BBF1 /* ProjectView.swift in Sources */,
 				CE80B7FF2C9B41690056BBF1 /* TestView.swift in Sources */,
 				CE80B7FB2C9B27100056BBF1 /* Event.swift in Sources */,
@@ -659,6 +667,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -690,6 +699,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

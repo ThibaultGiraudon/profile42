@@ -29,6 +29,25 @@ struct Event: Codable, Identifiable, Equatable {
     let prohibitionOfCancellation: Int?
     let createdAt: String
     let updatedAt: String
+    
+    init() {
+        self.id = 0
+        self.name = ""
+        self.description = ""
+        self.location = ""
+        self.kind = ""
+        self.maxPeople = nil
+        self.nbrSubscribers = 0
+        self.beginAt = ""
+        self.endAt = ""
+        self.campusIDs = []
+        self.cursusIDs = []
+        self.themes = []
+        self.waitlist = nil
+        self.prohibitionOfCancellation = nil
+        self.createdAt = ""
+        self.updatedAt = ""
+    }
 
     enum CodingKeys: String, CodingKey {
         case id, name, description, location, kind

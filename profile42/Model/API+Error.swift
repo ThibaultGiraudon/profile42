@@ -28,7 +28,7 @@ extension API {
             case .notFound:
                 return "Page or resource is not found"
             case .unprocessableEntity:
-                return "UnprocessableEntity"
+                return "Unprocessable Entity"
             case .internalServerError:
                 return "We have a problem with our server. Please try again later"
             case .responseError:

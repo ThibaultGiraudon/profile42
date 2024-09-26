@@ -33,8 +33,6 @@ extension String {
 
 struct EventView: View {
     @StateObject var api: API
-    @State var events: [Event]
-    var completion: ((Event) -> Void)
     var body: some View {
         VStack {
             ScrollView(showsIndicators: false) {
@@ -53,7 +51,7 @@ struct EventView: View {
                         .onTapGesture {
                             Task {
                                 do {
-                                    events = try await api.fetchData(API.EventEndPoints.events(campusID: api.currentCampus.id, cursusID: api.currentCursus.cursusID))
+                                    api.events = try await api.fetchData(API.EventEndPoints.events(campusID: api.currentCampus.id, cursusID: api.currentCursus.cursusID))
                                 } catch {
                                     print(error)
                                 }
@@ -70,14 +68,14 @@ struct EventView: View {
                         .onTapGesture {
                             Task {
                                 do {
-                                    events = try await api.fetchData(API.EventEndPoints.subscribed(id: api.user.id))
+                                    api.events = try await api.fetchData(API.EventEndPoints.subscribed(id: api.user.id))
                                 } catch {
                                     print(error)
                                 }
                             }
                         }
                 }
-                ForEach(events, id: \.id) { event in
+                ForEach(api.events, id: \.id) { event in
                     var color: Color {
                         if event.kind == "hackathon" {
                             return .green
@@ -126,7 +124,8 @@ struct EventView: View {
                             .stroke(color, lineWidth: 2)
                     }
                     .onTapGesture {
-                        completion(event)
+                        api.selectedEvent = event
+                        api.activeTab = .event
                     }
                 }
             }
@@ -235,8 +234,5 @@ struct EventView: View {
 }
 
 #Preview {
-    let events: [Event] = decode("events.json")
-    EventView(api: API(), events: events) {_ in 
-        
-    }
+    EventView(api: API())
 }

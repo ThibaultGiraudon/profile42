@@ -32,8 +32,6 @@ struct ProjectView: View {
                     api.selectedProject = project
                     api.activeTab = .project
                     api.navHistory.append(.project)
-                    print(api.navHistory)
-                    print(api.navHistory.count)
                 }
             }
         }
