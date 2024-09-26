@@ -19,7 +19,7 @@ struct CurrentProjectView: View {
                     .font(.headline)
                     .padding(.bottom)
                 Spacer()
-                NavigationLink(destination: EvaluationLogsView(api: api, user: user)) {
+                NavigationLink(destination: CorrectionPointsView(api: api, user: user)) {
                     Text("EVALUATION LOGS")
                         .padding(5)
                         .overlay {

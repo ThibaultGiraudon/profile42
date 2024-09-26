@@ -1,42 +1,26 @@
 //
-//  API+UserEndPoints.swift
+//  API+CoalitionEndPoint.swift
 //  profile42
 //
-//  Created by Thibault Giraudon on 17/09/2024.
+//  Created by Thibault Giraudon on 26/09/2024.
 //
 
 import SwiftUI
 
 extension API {
-    enum UserEndPoint: EndPoint {
-        case user
+    enum CoalitionEndPoint: EndPoint {
         case coalition(id: Int)
-        case search(login: String)
-        case logtime(id: Int, date: String)
         
         var authorization: authorization { .user }
         
         var path: String {
             switch self {
-            case .user:
-                return "/v2/me"
             case .coalition(let id):
                 return "/v2/users/\(id)/coalitions"
-            case .search(let login):
-                return "/v2/users/\(login)"
-            case .logtime(id: let id):
-                return "/v2/users/\(id)/locations_stats"
             }
         }
         
-        var queryItems: [String: String]? {
-            switch self {
-            case .logtime(id: _, date: let date):
-                return ["begin_at": date]
-            default:
-                return nil
-            }
-        }
+        var queryItems: [String: String]? { nil }
         
         var url: URL? {
             var components = URLComponents()
@@ -56,3 +40,4 @@ extension API {
         }
     }
 }
+

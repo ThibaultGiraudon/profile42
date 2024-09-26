@@ -40,12 +40,6 @@ struct ProfileView: View {
             } else {
                 ScrollView {
                     ZStack {
-//                        AsyncImage(url: URL(string: currentCoalition.coverURL)) { image in
-//                            image
-//                                .resizable()
-//                        } placeholder: {
-//                            ProgressView()
-//                        }
                         VStack {
                             VStack(alignment: .center) {
                                 Image(systemName: currentCoalition.imageURL)
@@ -137,7 +131,7 @@ struct ProfileView: View {
                         selectedEvent = event
                         showingDetail = true
                     }
-                    LocationView(locationStats: locationStats, startDate: selectedCursus.beginAt)
+                    LogtimeView(locationStats: locationStats, startDate: selectedCursus.beginAt)
                     HStack {
                         VStack {
                             ForEach(TabProfile.allCases, id: \.self) { tab in
@@ -269,11 +263,11 @@ struct ProfileView: View {
                         api.currentCursus = api.getCurrentCursus()
                         api.currentCampus = api.getCurrentCampus()
                         api.events = try await api.fetchData(API.EventEndPoints.events(campusID: api.currentCampus.id, cursusID: api.currentCursus.cursusID))
-                        api.coalitions = try await api.fetchData(API.UserEndPoint.coalition(id: api.user.id))
+                        api.coalitions = try await api.fetchData(API.CoalitionEndPoint.coalition(id: api.user.id))
                         currentCoalition = api.coalitions.first!
                         finishedProjects = api.user.projectsUsers.filter { $0.validated != nil }
                         currentProjects = api.user.projectsUsers.filter { $0.validated == nil }
-                        api.locationStats = try await api.fetchData(API.LocationEndPoint.location(id: api.user.id, startDate: selectedCursus.beginAt))
+                        api.locationStats = try await api.fetchData(API.LogtimeEndPoint.location(id: api.user.id, startDate: selectedCursus.beginAt))
                         isLoading = false
                     } catch {
                         alertMessage = error.localizedDescription

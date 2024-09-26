@@ -143,7 +143,6 @@ struct ProjectDetailView: View {
             Task {
                 do {
                     api.evaluations = try await api.fetchData(API.EvalutaionEndPoint.corrected(id: api.selectedUser.id == 0 ? api.user.id : api.selectedUser.id))
-//                    api.evaluations = decode("evaluation.json")
                     evaluations = api.getEvaluations(for: api.selectedProject.currentTeamID ?? 0)
                     if !evaluations.isEmpty {
                         firstEvaluation = evaluations.first!

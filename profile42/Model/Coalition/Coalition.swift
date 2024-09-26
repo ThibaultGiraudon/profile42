@@ -35,14 +35,13 @@ struct Coalition: Codable {
         self.slug = try container.decode(String.self, forKey: .slug)
         self.color = try container.decode(String.self, forKey: .color)
         self.score = try container.decode(Int.self, forKey: .score)
-//        self.imageURL = try container.decode(String.self, forKey: .imageURL)
         self.coverURL = try container.decode(String.self, forKey: .coverURL)
         self.userID = try container.decode(Int.self, forKey: .userID)
         
         switch self.name {
         case "Water":
             self.imageURL = "drop"
-        case "Hearth":
+        case "Earth":
             self.imageURL = "globe"
         case "Air":
             self.imageURL = "wind"

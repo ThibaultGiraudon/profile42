@@ -86,46 +86,45 @@ class API: ObservableObject {
     @Published var navHistory: [Tab] = [.profile]
     @Published var failedCount: Int = 0
     
-    init() {
-        if let data = UserDefaults.standard.data(forKey: "isLoggedIn") {
-            do {
-                isLoggedIn = try JSONDecoder().decode(Bool.self, from: data)
-                print(" logged in: \(isLoggedIn)")
-            } catch {
-                print(error)
-            }
-        } else {
-            isLoggedIn = false
-        }
-        if let data = UserDefaults.standard.data(forKey: "token") {
-            do {
-                token = try JSONDecoder().decode(Token.self, from: data)
-            } catch {
-                print(error)
-            }
-        } else {
-            token = Token(accessToken: "", refreshToken: "")
-        }
-        if let data = UserDefaults.standard.data(forKey: "applicationToken") {
-            do {
-                applicationToken = try JSONDecoder().decode(String.self, from: data)
-            } catch {
-                print(error)
-            }
-        } else {
-            applicationToken = ""
-        }
-        
-        if let data = UserDefaults.standard.data(forKey: "history") {
-            do {
-                history = try JSONDecoder().decode([User].self, from: data)
-            } catch {
-                print(error)
-            }
-        } else {
-            history = []
-        }
-    }
+//    init() {
+//        if let data = UserDefaults.standard.data(forKey: "isLoggedIn") {
+//            do {
+//                isLoggedIn = try JSONDecoder().decode(Bool.self, from: data)
+//            } catch {
+//                print(error)
+//            }
+//        } else {
+//            isLoggedIn = false
+//        }
+//        if let data = UserDefaults.standard.data(forKey: "token") {
+//            do {
+//                token = try JSONDecoder().decode(Token.self, from: data)
+//            } catch {
+//                print(error)
+//            }
+//        } else {
+//            token = Token(accessToken: "", refreshToken: "")
+//        }
+//        if let data = UserDefaults.standard.data(forKey: "applicationToken") {
+//            do {
+//                applicationToken = try JSONDecoder().decode(String.self, from: data)
+//            } catch {
+//                print(error)
+//            }
+//        } else {
+//            applicationToken = ""
+//        }
+//        
+//        if let data = UserDefaults.standard.data(forKey: "history") {
+//            do {
+//                history = try JSONDecoder().decode([User].self, from: data)
+//            } catch {
+//                print(error)
+//            }
+//        } else {
+//            history = []
+//        }
+//    }
     
     func getEvaluations(for id: Int) -> [Evaluation] {
         var evaluations: [Evaluation] = []
@@ -162,9 +161,9 @@ class API: ObservableObject {
         return lastCursus
     }
     
+    @MainActor
     func fetchData<T: Decodable>(_ endpoint: API.EndPoint) async throws -> T {
         guard let apiURL = endpoint.url else {
-            print("URL error")
             throw URLError(.badURL)
         }
         
@@ -211,14 +210,13 @@ class API: ObservableObject {
             failedCount = 0
             return decoded
         } catch {
-            print("Decoding error")
-            throw error
+            throw API.Error.responseError
         }
     }
     
+    @MainActor
     func getToken<T: Decodable>(endpoint: API.AuthEndPoint) async throws -> T {
         guard let tokenURL = endpoint.url else {
-            print("URL error")
             throw URLError(.badURL)
         }
         var request = URLRequest(url: tokenURL)
@@ -227,14 +225,40 @@ class API: ObservableObject {
         
         let (data, response) = try await URLSession.shared.data(for: request)
         
-        guard (response as? HTTPURLResponse)?.statusCode == 200 else {
-            print("Server error")
-            print(String(data: data, encoding: .utf8) ?? "")
-            throw URLError(.badServerResponse)
-        }
+        print(type(of: response))
         
+        guard (response as? HTTPURLResponse)?.statusCode == 200 else {
+            switch (response as? HTTPURLResponse)?.statusCode {
+            case 400:
+                throw API.Error.malformed
+            case 401:
+                failedCount += 1
+                if failedCount >= 3 {
+                    throw API.Error.unauthorized
+                } else {
+                    token = try await getToken(endpoint: API.AuthEndPoint.refreshToken(token: token.refreshToken))
+                    let appToken: ApplicationToken = try await getToken(endpoint: API.AuthEndPoint.application)
+                    applicationToken = appToken.accessToken
+                    return try await fetchData(endpoint)
+                }
+            case 403:
+                throw API.Error.forbidden
+            case 404:
+                throw API.Error.notFound
+            case 422:
+                throw API.Error.unprocessableEntity
+            case 429:
+                try await Task.sleep(for: .seconds(1))
+                return try await fetchData(endpoint)
+            case 500:
+                throw API.Error.internalServerError
+            default:
+                throw API.Error.internalServerError
+            }
+        }
         return try JSONDecoder().decode(T.self, from: data)
     }
+    
 }
 
 

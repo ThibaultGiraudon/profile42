@@ -38,7 +38,6 @@ struct ContentView: View {
     @Environment(\.webAuthenticationSession) private var webAuthenticationSession
     @ObservedObject private var api = API()
     @State private var selectedTab: TabProfile = .projects
-    private var authManager = AuthManager()
     @State private var showingWebView = false
     @State private var offset: CGFloat = 0
 
@@ -124,20 +123,10 @@ struct ContentView: View {
                 }
             } else {
                 Button("Login with OAuth 2.0") {
-//                    let user: User = decode("user.json")
-//                    api.user = user
-//                    api.coalitions = decode("coalitions.json")
-//                    api.currentCoalition = api.coalitions.first!
-//                    api.currentCursus = api.getCurrentCursus()
-//                    api.finishedProjects = api.getFinihedProjects()
-//                    api.currentProjects = api.getCurrentProjects()
-//                    api.locationStats = decode("locationsStats.json")
-//                    print(api.locationStats.count)
-//                    api.isLoading = false
                     showingWebView = true
                 }
                 .sheet(isPresented: $showingWebView) {
-                    AuthViewController(url: authManager.authURL) { code in
+                    AuthViewController(url: API.Constants.authURL) { code in
                         Task {
                             do {
                                 let token: Token = try await api.getToken(endpoint: API.AuthEndPoint.user(code: code))
@@ -146,7 +135,6 @@ struct ContentView: View {
                                 api.applicationToken = applicationToken.accessToken
                                 api.isLoggedIn = true
                             } catch {
-                                print("Auth error")
                                 print(error)
                             }
                         }
@@ -154,18 +142,6 @@ struct ContentView: View {
                 }
             }
         }
-//        .onAppear {
-//            let user: User = decode("user.json")
-//            api.user = user
-//            api.coalitions = decode("coalitions.json")
-//            api.locationStats = decode("locationsStats.json")
-//            api.currentCoalition = api.coalitions.first!
-//            api.currentCursus = api.getCurrentCursus()
-//            api.finishedProjects = api.getFinihedProjects()
-//            api.currentProjects = api.getCurrentProjects()
-//            print(api.locationStats.count)
-//            api.isLoading = false
-//        }
         .alert(isPresented: $api.showAlert) {
             Alert(title: Text(api.alertTitle))
         }
@@ -176,7 +152,7 @@ struct ContentView: View {
         if let lastTab = api.navHistory.last {
             api.activeTab = lastTab
         } else {
-            api.activeTab = .profile // Valeur par défaut si l'historique est vide
+            api.activeTab = .profile
         }
     }
 }

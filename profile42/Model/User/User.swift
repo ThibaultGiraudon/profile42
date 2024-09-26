@@ -142,6 +142,9 @@ struct CursusUser: Codable {
     let skills: [Skills]
     let cursusID: Int
     let hasCoalition: Bool
+    let createdAt: String
+    let updatedAt: String
+    let blackholedAt: String?
     let user: UserRef
     let cursus: Cursus
     
@@ -154,6 +157,9 @@ struct CursusUser: Codable {
         self.skills = []
         self.cursusID = 0
         self.hasCoalition = false
+        self.createdAt = ""
+        self.updatedAt = ""
+        self.blackholedAt = ""
         self.user = UserRef(id: 0, login: "", url: "")
         self.cursus = Cursus(id: 0, createdAt: "", name: "", slug: "")
     }
@@ -164,6 +170,9 @@ struct CursusUser: Codable {
         case endAt = "end_at"
         case cursusID = "cursus_id"
         case hasCoalition = "has_coalition"
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+        case blackholedAt = "blackholed_at"
     }
     
     struct Skills: Codable, Identifiable  {

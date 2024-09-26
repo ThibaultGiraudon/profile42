@@ -1,5 +1,5 @@
 //
-//  EvaluationLogsView.swift
+//  CorrectionPointsView.swift
 //  profile42
 //
 //  Created by Thibault Giraudon on 18/09/2024.
@@ -9,16 +9,16 @@ import SwiftUI
 import Charts
 
 extension String {
-    func formattedDate() -> String {
+    func formattedDate(format: String) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "YYYY-MM-dd'T'HH:mm:ss.SSSZ"
         let strFormatter = DateFormatter()
-        strFormatter.dateFormat = "MMMM dd, yyyy HH:mm"
+        strFormatter.dateFormat = format
         return strFormatter.string(from: dateFormatter.date(from: self) ?? Date())
     }
 }
 
-struct EvaluationLogsView: View {
+struct CorrectionPointsView: View {
     var api: API
     var user: User
     let numberFormatter: NumberFormatter = {
@@ -60,7 +60,7 @@ struct EvaluationLogsView: View {
                             VStack(alignment: .leading) {
                                 Text(evaluation.reason)
                                     .font(.title2.bold())
-                                Text("\(evaluation.total + evaluation.sum) points - \( evaluation.createdAt.formattedDate())")
+                                Text("\(evaluation.total + evaluation.sum) points - \( evaluation.createdAt.formattedDate(format: "MMMM dd, yyyy HH:mm"))")
                             }
                         }
                         .padding()
@@ -81,5 +81,5 @@ struct EvaluationLogsView: View {
 }
 
 #Preview {
-    EvaluationLogsView(api: API(), user: User())
+    CorrectionPointsView(api: API(), user: User())
 }

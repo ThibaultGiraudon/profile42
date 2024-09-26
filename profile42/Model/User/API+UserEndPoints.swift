@@ -1,5 +1,5 @@
 //
-//  LocationEndPoint.swift
+//  API+UserEndPoints.swift
 //  profile42
 //
 //  Created by Thibault Giraudon on 17/09/2024.
@@ -8,22 +8,30 @@
 import SwiftUI
 
 extension API {
-    enum LocationEndPoint: EndPoint {
-        case location(id: Int, startDate: String)
+    enum UserEndPoint: EndPoint {
+        case user
+        case search(login: String)
+        case logtime(id: Int, date: String)
         
-        var authorization: authorization { .application }
+        var authorization: authorization { .user }
         
         var path: String {
             switch self {
-            case .location(let id, _):
+            case .user:
+                return "/v2/me"
+            case .search(let login):
+                return "/v2/users/\(login)"
+            case .logtime(id: let id):
                 return "/v2/users/\(id)/locations_stats"
             }
         }
         
         var queryItems: [String: String]? {
             switch self {
-            case .location(_, let startDate):
-                return ["begin_at": String(startDate.prefix(10))]
+            case .logtime(id: _, date: let date):
+                return ["begin_at": date]
+            default:
+                return nil
             }
         }
         

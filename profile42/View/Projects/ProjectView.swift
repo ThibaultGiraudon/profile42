@@ -44,10 +44,6 @@ struct ProjectView: View {
     ProjectView(api: API(), finishedProjects: [ProjectUser]())
 }
 
-// open and load data from project.json as ProjectUser
-
-let projectsUsers: [ProjectUser] = decode("project.json")
-
 func decode<T: Codable>(_ file: String) -> T {
         guard let url = Bundle.main.url(forResource: file, withExtension: nil) else {
             fatalError("Faliled to locate \(file) in bundle")

@@ -88,6 +88,22 @@ struct OtherProfileView: View {
                             .clipShape(Rectangle())
                             .padding()
                             // TODO add weekly attendance
+                            if let blackholedAt = selectedCursus.blackholedAt {
+                                VStack {
+                                    HStack {
+                                        Spacer()
+                                        Text("Blackholed at")
+                                            .foregroundStyle(.cyan)
+                                        Spacer()
+                                    }
+                                    Text("\(blackholedAt.formattedDate(format: "dd/MM/yyyy"))")
+                                }
+                                .padding(.vertical)
+                                .padding(.horizontal, 60)
+                                .background(.gray)
+                                .clipShape(Rectangle())
+                                .padding()
+                            }
                             ZStack(alignment: .leading) {
                                 Rectangle()
                                     .frame(width: UIScreen.main.bounds.width - 20, height: 20)
@@ -130,7 +146,7 @@ struct OtherProfileView: View {
                     .padding(.vertical)
                     .frame(maxWidth: .infinity)
                     .background(.gray)
-                    LocationView(locationStats: locationStats, startDate: selectedCursus.beginAt)
+                    LogtimeView(locationStats: locationStats, startDate: selectedCursus.beginAt)
                     HStack {
                         VStack {
                             ForEach(TabProfile.allCases, id: \.self) { tab in
@@ -166,22 +182,14 @@ struct OtherProfileView: View {
             }
         }
         .onAppear {
-//            coalitions = decode("coalitions.json")
-//            locationStats = decode("locationsStats.json")
-//            currentCoalition = coalitions.first!
-//            finishedProjects = user.projectsUsers.filter { $0.validated != nil }
-//            currentProjects = user.projectsUsers.filter { $0.validated == nil }
-//            evaluations = decode("evaluationLogs.json")
-//            isLoading = false
             Task {
                 do {
                     print(user.login)
-                    coalitions = try await api.fetchData(API.UserEndPoint.coalition(id: user.id))
+                    coalitions = try await api.fetchData(API.CoalitionEndPoint.coalition(id: user.id))
                     currentCoalition = coalitions.first!
                     finishedProjects = user.projectsUsers.filter { $0.validated != nil }
                     currentProjects = user.projectsUsers.filter { $0.validated == nil }
-                    locationStats = try await api.fetchData(API.LocationEndPoint.location(id: user.id, startDate: selectedCursus.beginAt))
-//                    evaluations = try await api.fetchData(API.CorrectionEndpoint.correction(id: user.id))
+                    locationStats = try await api.fetchData(API.LogtimeEndPoint.location(id: user.id, startDate: selectedCursus.beginAt))
                     isLoading = false
                 } catch {
                     print(error)

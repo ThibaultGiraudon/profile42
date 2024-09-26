@@ -15,6 +15,7 @@ extension API {
         case notFound
         case unprocessableEntity
         case internalServerError
+        case responseError
         
         var localizedDescription: String {
             switch self {
@@ -30,6 +31,8 @@ extension API {
                 return "UnprocessableEntity"
             case .internalServerError:
                 return "We have a problem with our server. Please try again later"
+            case .responseError:
+                return "An error occurred while processing the response"
             }
         }
     }
