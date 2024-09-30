@@ -54,7 +54,7 @@ class API: ObservableObject {
     @Published var currentCoalition = Coalition()
     @Published var currentCursus = CursusUser()
     @Published var currentCampus = Campus()
-    @Published var isLoading = true
+    @Published var isLoading = false
     @Published var locationStats = [String: String]()
     @Published var finishedProjects = [ProjectUser]()
     @Published var currentProjects = [ProjectUser]()
@@ -258,9 +258,13 @@ class API: ObservableObject {
     
     func logOut() {
         isLoggedIn = false
-        UserDefaults.standard.removeObject(forKey: "token")
-        UserDefaults.standard.removeObject(forKey: "applicationToken")
-        UserDefaults.standard.removeObject(forKey: "history")
+        let domain = Bundle.main.bundleIdentifier!
+        UserDefaults.standard.removePersistentDomain(forName: domain)
+        UserDefaults.standard.synchronize()
+        self.user = User()
+        self.token = Token(accessToken: "", refreshToken: "")
+        self.applicationToken = ""
+        self.history = []
     }
     
 }

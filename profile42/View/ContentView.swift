@@ -77,7 +77,6 @@ struct ContentView: View {
                             api.selectedUser = api.user
                             api.navHistory.append(.otherProfile)
                             api.userHistory.append(api.user)
-                            print(api.userHistory.count)
                             api.activeTab = .otherProfile
                         }
                         .disabled(api.isLoading)
@@ -128,16 +127,6 @@ struct ContentView: View {
                                 }
                         )
                 }
-                .overlay {
-                    if api.isLoading {
-                        GeometryReader { geometry in
-                            ProgressView()
-                                .frame(width: geometry.size.width, height: geometry.size.height)
-                                .ignoresSafeArea(.all)
-                                .background(.white)
-                        }
-                    }
-                }
             } else {
                 Button("Login with OAuth 2.0") {
                     showingWebView = true
@@ -162,7 +151,20 @@ struct ContentView: View {
                 }
             }
         }
+        .overlay {
+            if api.isLoading {
+                GeometryReader { geometry in
+                    ProgressView()
+                        .frame(width: geometry.size.width, height: geometry.size.height)
+                        .ignoresSafeArea(.all)
+                        .background(.white)
+                }
+            }
+        }
         .onChange(of: api.applicationToken) {
+            if api.applicationToken.isEmpty {
+                return
+            }
             Task {
                 do {
                     try await api.logIn()
@@ -175,7 +177,7 @@ struct ContentView: View {
             }
         }
         .onAppear {
-            if !api.isLoggedIn {
+            if !api.isLoggedIn && !api.applicationToken.isEmpty {
                 Task {
                     do {
                         try await api.logIn()

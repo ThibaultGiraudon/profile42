@@ -57,7 +57,6 @@ struct ProjectDetailView: View {
                                                 let user: User = try await api.fetchData(API.UserEndPoint.search(login: user.login))
                                                 api.selectedUser = user
                                                 api.userHistory.append(user)
-                                                print(api.userHistory.count)
                                                 api.navHistory.append(.otherProfile)
                                                 api.activeTab = .otherProfile
                                             } catch {
@@ -107,7 +106,6 @@ struct ProjectDetailView: View {
                                                     let user: User = try await api.fetchData(API.UserEndPoint.search(login: evaluation.corrector.login))
                                                     api.selectedUser = user
                                                     api.userHistory.append(user)
-                                                    print(api.userHistory.count)
                                                     api.navHistory.append(.otherProfile)
                                                     api.activeTab = .otherProfile
                                                 } catch {

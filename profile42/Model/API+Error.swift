@@ -8,7 +8,7 @@
 import Foundation
 
 extension API {
-    enum Error: Swift.Error {
+    enum Error: Swift.Error, LocalizedError {
         case malformed
         case unauthorized
         case forbidden
@@ -17,7 +17,7 @@ extension API {
         case internalServerError
         case responseError
         
-        var localizedDescription: String {
+        var errorDescription: String? {
             switch self {
             case .malformed:
                 return "The request is malformed"

@@ -84,7 +84,6 @@ struct SearchView: View {
                             api.selectedUser = user
                             api.userHistory.append(user)
                             api.navHistory.append(.otherProfile)
-                            print(api.userHistory.count)
                             api.activeTab = .otherProfile
                         }
                     }
