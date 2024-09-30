@@ -108,16 +108,17 @@ struct ProfileView: View {
     @StateObject var api: API
     @State private var selectedTab: TabProfile = .projects
     @State var user: User
+    @State private var coalitionsUsers: [CoalitionUser] = []
     @State private var selectedCursus = CursusUser()
     @State private var selectedCursusName = "42cursus"
     @State private var locationStats = [String: String]()
     @State private var coalitions = [Coalition]()
-    @State private var currentCoalition = Coalition()
+    @State private var currentCoalition: Coalition?
+    @State private var currentCoalitionUser: CoalitionUser?
     @State private var currentCursus = CursusUser()
     @State private var currentCampus = Campus()
     @State private var color: Color = .blue
     @State private var isPresented: Bool = false
-    @State private var coalitionImage: String = ""
     private var finishedProjects: [ProjectUser] { user.projectsUsers.filter { $0.validated != nil && $0.cursusIDs.contains(selectedCursus.cursus.id)} }
     private var currentProjects: [ProjectUser] { user.projectsUsers.filter { $0.validated == nil } }
     @State private var evaluations: [Correction] = []
@@ -135,16 +136,30 @@ struct ProfileView: View {
                     .display(user.id != api.user.id)
                     ZStack {
                         VStack {
-                            VStack(alignment: .center) {
-                                SVGImageView(svgName: $coalitionImage, size: CGRect(x: 0, y: 0, width: 50, height: 50))
-                                    .frame(width: 50, height: 50)
-                                    .padding()
-                                    .background(color)
-                                Text(currentCoalition.name)
-                                Text(user.usualFullName)
-                                    .font(.title2.bold())
-                                Text(user.login)
-                            }
+                                VStack(alignment: .center) {
+                                    if selectedCursus.hasCoalition {
+                                        if let currentCoalition = currentCoalition, let currentCoalitionUser = currentCoalitionUser {
+                                            let imageURL = currentCoalition.imageURL
+                                            SVGImageView(svgName: .constant(imageURL), size: CGRect(x: 0, y: 0, width: 50, height: 50))
+                                                .frame(width: 50, height: 50)
+                                                .padding()
+                                                .background(color)
+                                            Text(currentCoalition.name)
+                                            HStack {
+                                                Image(systemName: "trophy.fill")
+                                                Text("\(currentCoalitionUser.score)")
+                                                Image(systemName: "chevron.up.2")
+                                                Text("\(currentCoalitionUser.rank)")
+                                            }
+                                        }
+                                    }
+                                    if let title = user.titles.first?.name {
+                                        Text(title.replace("%login", with: user.login))
+                                    }
+                                    Text(user.usualFullName)
+                                        .font(.title2.bold())
+                                    Text(user.login)
+                                }
                             VStack(alignment: .leading) {
                                 HStack {
                                     Text("Wallet")
@@ -221,7 +236,7 @@ struct ProfileView: View {
                         }
                         .padding(.top)
                         .background(
-                            AsyncImage(url: URL(string: currentCoalition.coverURL!)) { image in
+                            AsyncImage(url: URL(string: currentCoalition?.coverURL! ?? "https://profile.intra.42.fr/assets/background_login-a4e0666f73c02f025f590b474b394fd86e1cae20e95261a6e4862c2d0faa1b04.jpg")) { image in
                                 image
                                     .resizable()
                                     .onAppear {
@@ -297,17 +312,18 @@ struct ProfileView: View {
         }
         .onChange(of: selectedCursusName) {
             selectedCursus = user.cursusUsers.first(where: { $0.cursus.name == selectedCursusName})!
+            currentCoalitionUser = getCoalition(from: selectedCursus.updatedAt, in: coalitionsUsers)
             currentCoalition = coalitions.first(where: {
-                for component in selectedCursus.cursus.slug.components(separatedBy: "-") {
-                    if !$0.slug.contains(component) {
-                        return false
-                    }
-                }
-                return true
-            }) ?? currentCoalition
-            
-            color = currentCoalition.color.toColor()
-            coalitionImage = currentCoalition.imageURL
+                            for component in selectedCursus.cursus.slug.components(separatedBy: "-") {
+                                print(component)
+                                if !$0.slug.contains(component) {
+                                    print("not found, \(component) in \($0.slug)")
+                                    return false
+                                }
+                            }
+                            return true
+                        }) ?? coalitions.first(where: { $0.id == currentCoalitionUser?.coalitionId ?? 0 })
+            color = currentCoalition?.color.toColor() ?? .cyan
         }
         .onAppear {
             api.isLoading = true
@@ -315,37 +331,74 @@ struct ProfileView: View {
             if api.user.id == user.id {
                 coalitions = api.coalitions
                 locationStats = api.locationStats
-                currentCoalition = coalitions.first!
-                color = currentCoalition.color.toColor()
-            } else {
-                Task {
-                    do {
+            }
+            Task {
+                do {
+                    coalitionsUsers = try await api.fetchData(API.CoalitionEndPoint.coalitionUser(id: user.id))
+                    selectedCursus = {
+                        var latestCursus = user.cursusUsers.first ?? CursusUser()
+                        user.cursusUsers.forEach { cursus in
+                            if cursus.beginAt > latestCursus.beginAt {
+                                latestCursus = cursus
+                            }
+                        }
+                        return latestCursus
+                    }()
+                    if api.user.id != user.id {
                         coalitions = try await api.fetchData(API.CoalitionEndPoint.coalition(id: user.id))
                         locationStats = try await api.fetchData(API.LogtimeEndPoint.location(id: user.id, startDate: selectedCursus.beginAt))
-                        currentCoalition = coalitions.first!
-                        color = currentCoalition.color.toColor()
-                    } catch {
-                        api.alertTitle = error.localizedDescription
-                        api.showAlert = true
-                        api.activeTab = .profile
                     }
+                    currentCoalitionUser = getCoalition(from: selectedCursus.updatedAt, in: coalitionsUsers)
+                    currentCoalition = coalitions.first(where: {
+                        for component in selectedCursus.cursus.slug.components(separatedBy: "-") {
+                            if !$0.slug.contains(component) {
+                                return false
+                            }
+                        }
+                        return true
+                    }) ?? coalitions.first(where: { $0.id == currentCoalitionUser?.coalitionId ?? 0 })
+                    color = currentCoalition?.color.toColor() ?? .cyan
+                } catch {
+                    print(error)
+                    api.alertTitle = error.localizedDescription
+                    api.showAlert = true
+                    api.activeTab = .profile
                 }
             }
-            selectedCursus = {
-                var latestCursus = user.cursusUsers.first ?? CursusUser()
-                user.cursusUsers.forEach { cursus in
-                    if cursus.beginAt > latestCursus.beginAt {
-                        latestCursus = cursus
-                    }
-                }
-                return latestCursus
-            }()
             api.currentCursus = api.getCurrentCursus(from: user.cursusUsers)
             api.currentCampus = api.getCurrentCampus(from: user.campus)
-            coalitionImage = currentCoalition.imageURL
             api.isLoading = false
             isPresented = true
         }
+    }
+    
+    func getCoalition(from date: String, in coalitions: [CoalitionUser]) -> CoalitionUser? {
+        var returnCoalition: CoalitionUser?
+        var lastDelta = 2147483647.0
+        
+        for coalition in coalitions {
+            if coalition.updatedAt == date || coalition.createdAt == date {
+                return coalition
+            }
+            let delta = abs(coalition.createdAt.toDate() - date.toDate())
+            if delta < lastDelta {
+                lastDelta = delta
+                returnCoalition = coalition
+            }
+        }
+        return returnCoalition
+    }
+}
+
+extension String {
+    func replace(_ target: String, with replacement: String) -> String {
+        return replacingOccurrences(of: target, with: replacement, options: .literal, range: nil)
+    }
+}
+
+extension Date {
+    static func - (lhs: Date, rhs: Date) -> TimeInterval {
+        return lhs.timeIntervalSinceReferenceDate - rhs.timeIntervalSinceReferenceDate
     }
 }
 

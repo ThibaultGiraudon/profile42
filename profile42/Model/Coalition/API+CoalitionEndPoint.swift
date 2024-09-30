@@ -10,6 +10,7 @@ import SwiftUI
 extension API {
     enum CoalitionEndPoint: EndPoint {
         case coalition(id: Int)
+        case coalitionUser(id: Int)
         
         var authorization: authorization { .user }
         
@@ -17,6 +18,8 @@ extension API {
             switch self {
             case .coalition(let id):
                 return "/v2/users/\(id)/coalitions"
+            case .coalitionUser(id: let id):
+                return "/v2/users/\(id)/coalitions_users"
             }
         }
         

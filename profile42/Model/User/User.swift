@@ -183,7 +183,7 @@ struct CursusUser: Codable, Hashable {
         self.createdAt = ""
         self.updatedAt = ""
         self.blackholedAt = ""
-        self.user = UserRef(id: 0, login: "", url: "")
+        self.user = UserRef(id: 0, login: "", url: "", updatedAt: "")
         self.cursus = Cursus(id: 0, createdAt: "", name: "", slug: "")
     }
 
@@ -208,6 +208,12 @@ struct CursusUser: Codable, Hashable {
         let id: Int
         let login: String
         let url: String
+        let updatedAt: String
+        
+        enum CodingKeys: String, CodingKey {
+            case id, login, url
+            case updatedAt = "updated_at"
+        }
     }
 
     struct Cursus: Codable, Hashable {
