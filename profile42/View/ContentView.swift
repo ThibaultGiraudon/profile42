@@ -140,8 +140,10 @@ struct ContentView: View {
                             do {
                                 let token: Token = try await api.getToken(endpoint: API.AuthEndPoint.user(code: code))
                                 api.token = token
+                                print(token.accessToken)
                                 let applicationToken: ApplicationToken = try await api.getToken(endpoint: API.AuthEndPoint.application)
                                 api.applicationToken = applicationToken.accessToken
+                                print(applicationToken.accessToken)
                                 showingWebView = false
                             } catch {
                                 api.alertTitle = error.localizedDescription

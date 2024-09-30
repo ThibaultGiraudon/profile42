@@ -20,8 +20,7 @@
 		CE80B7E12C9AE37A0056BBF1 /* Correction.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE80B7E02C9AE37A0056BBF1 /* Correction.swift */; };
 		CE80B7E32C9AE3DC0056BBF1 /* API+Correction.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE80B7E22C9AE3DC0056BBF1 /* API+Correction.swift */; };
 		CE80B7E72C9AE5DC0056BBF1 /* CorrectionPointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE80B7E62C9AE5DC0056BBF1 /* CorrectionPointsView.swift */; };
-		CE80B7F32C9B03650056BBF1 /* OtherProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE80B7F22C9B03650056BBF1 /* OtherProfileView.swift */; };
-		CE80B7F52C9B20FA0056BBF1 /* OldProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE80B7F42C9B20FA0056BBF1 /* OldProfileView.swift */; };
+		CE80B7F32C9B03650056BBF1 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE80B7F22C9B03650056BBF1 /* ProfileView.swift */; };
 		CE80B7F72C9B215B0056BBF1 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE80B7F62C9B215B0056BBF1 /* EventView.swift */; };
 		CE80B7F92C9B26040056BBF1 /* API+EventEndPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE80B7F82C9B26040056BBF1 /* API+EventEndPoints.swift */; };
 		CE80B7FB2C9B27100056BBF1 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE80B7FA2C9B27100056BBF1 /* Event.swift */; };
@@ -39,6 +38,8 @@
 		CE9532982C9829E60097F670 /* profile42UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9532972C9829E60097F670 /* profile42UITestsLaunchTests.swift */; };
 		CE9532AD2C982FF00097F670 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9532AC2C982FF00097F670 /* AuthViewController.swift */; };
 		CE9532B02C984FF20097F670 /* API-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE9532AF2C984FF20097F670 /* API-Info.plist */; };
+		CEA29E832CA820F5009128D9 /* API+ExamEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA29E822CA820F5009128D9 /* API+ExamEndPoint.swift */; };
+		CEA29E852CA826B3009128D9 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA29E842CA826B3009128D9 /* SwiftUIView.swift */; };
 		CEA61E9A2C99A4CE004D5CC9 /* API+UserEndPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA61E992C99A4C2004D5CC9 /* API+UserEndPoints.swift */; };
 		CEA61E9C2C99A502004D5CC9 /* API+LogtimeEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA61E9B2C99A502004D5CC9 /* API+LogtimeEndPoint.swift */; };
 		CEA61E9E2C99A532004D5CC9 /* API+AuthEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA61E9D2C99A532004D5CC9 /* API+AuthEndPoint.swift */; };
@@ -80,8 +81,7 @@
 		CE80B7E02C9AE37A0056BBF1 /* Correction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Correction.swift; sourceTree = "<group>"; };
 		CE80B7E22C9AE3DC0056BBF1 /* API+Correction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Correction.swift"; sourceTree = "<group>"; };
 		CE80B7E62C9AE5DC0056BBF1 /* CorrectionPointsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorrectionPointsView.swift; sourceTree = "<group>"; };
-		CE80B7F22C9B03650056BBF1 /* OtherProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherProfileView.swift; sourceTree = "<group>"; };
-		CE80B7F42C9B20FA0056BBF1 /* OldProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldProfileView.swift; sourceTree = "<group>"; };
+		CE80B7F22C9B03650056BBF1 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		CE80B7F62C9B215B0056BBF1 /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		CE80B7F82C9B26040056BBF1 /* API+EventEndPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+EventEndPoints.swift"; sourceTree = "<group>"; };
 		CE80B7FA2C9B27100056BBF1 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
@@ -103,6 +103,8 @@
 		CE9532AC2C982FF00097F670 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		CE9532AE2C9837FE0097F670 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CE9532AF2C984FF20097F670 /* API-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "API-Info.plist"; sourceTree = "<group>"; };
+		CEA29E822CA820F5009128D9 /* API+ExamEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+ExamEndPoint.swift"; sourceTree = "<group>"; };
+		CEA29E842CA826B3009128D9 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 		CEA61E992C99A4C2004D5CC9 /* API+UserEndPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+UserEndPoints.swift"; sourceTree = "<group>"; };
 		CEA61E9B2C99A502004D5CC9 /* API+LogtimeEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+LogtimeEndPoint.swift"; sourceTree = "<group>"; };
 		CEA61E9D2C99A532004D5CC9 /* API+AuthEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+AuthEndPoint.swift"; sourceTree = "<group>"; };
@@ -200,9 +202,18 @@
 			path = profile42UITests;
 			sourceTree = "<group>";
 		};
+		CEA29E812CA820E5009128D9 /* Exam */ = {
+			isa = PBXGroup;
+			children = (
+				CEA29E822CA820F5009128D9 /* API+ExamEndPoint.swift */,
+			);
+			path = Exam;
+			sourceTree = "<group>";
+		};
 		CEA61E982C99A496004D5CC9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				CEA29E812CA820E5009128D9 /* Exam */,
 				CE4222D92C9858DE00A6ECD8 /* API.swift */,
 				CEC483B72CA306EC006A9E3D /* API+Error.swift */,
 				CEA61E9F2C99A561004D5CC9 /* API+Constants.swift */,
@@ -223,6 +234,7 @@
 				CE95327C2C9829E50097F670 /* ContentView.swift */,
 				CE80B8002C9C46430056BBF1 /* SearchView.swift */,
 				CE80B7FE2C9B41690056BBF1 /* TestView.swift */,
+				CEA29E842CA826B3009128D9 /* SwiftUIView.swift */,
 				CEC483CA2CA59E35006A9E3D /* View+display.swift */,
 				CEC483BA2CA57841006A9E3D /* Achievements */,
 				CEC483BB2CA57851006A9E3D /* Projects */,
@@ -256,8 +268,7 @@
 				CEA61EA12C99B01A004D5CC9 /* LogtimeView.swift */,
 				CEC483C62CA59403006A9E3D /* EventDetailView.swift */,
 				CE80B7F62C9B215B0056BBF1 /* EventView.swift */,
-				CE80B7F42C9B20FA0056BBF1 /* OldProfileView.swift */,
-				CE80B7F22C9B03650056BBF1 /* OtherProfileView.swift */,
+				CE80B7F22C9B03650056BBF1 /* ProfileView.swift */,
 				CE80B7CD2C99C65F0056BBF1 /* SkillsView.swift */,
 				CE80B7E62C9AE5DC0056BBF1 /* CorrectionPointsView.swift */,
 			);
@@ -470,6 +481,7 @@
 				CE95327D2C9829E50097F670 /* ContentView.swift in Sources */,
 				CEC483CB2CA59E35006A9E3D /* View+display.swift in Sources */,
 				CE80B7D42C99D00A0056BBF1 /* CurrentProjectView.swift in Sources */,
+				CEA29E832CA820F5009128D9 /* API+ExamEndPoint.swift in Sources */,
 				CEA61E9A2C99A4CE004D5CC9 /* API+UserEndPoints.swift in Sources */,
 				CE80B7DF2C9AD2C60056BBF1 /* AllAchievementsView.swift in Sources */,
 				CE80B7DA2C99DADB0056BBF1 /* AchievementsView.swift in Sources */,
@@ -482,15 +494,15 @@
 				CE80B7E72C9AE5DC0056BBF1 /* CorrectionPointsView.swift in Sources */,
 				CE80B83F2C9D5A990056BBF1 /* ProjectDetailView.swift in Sources */,
 				CE4222DC2C9877E600A6ECD8 /* Coalition.swift in Sources */,
-				CE80B7F32C9B03650056BBF1 /* OtherProfileView.swift in Sources */,
+				CE80B7F32C9B03650056BBF1 /* ProfileView.swift in Sources */,
 				CEC483C32CA579B9006A9E3D /* API+CoalitionEndPoint.swift in Sources */,
 				CE80B8012C9C46430056BBF1 /* SearchView.swift in Sources */,
 				CE4222DA2C9858DE00A6ECD8 /* API.swift in Sources */,
 				CE80B7F72C9B215B0056BBF1 /* EventView.swift in Sources */,
 				CE80B83D2C9D577B0056BBF1 /* API+EvaluationEndPoint.swift in Sources */,
 				CE95327B2C9829E50097F670 /* profile42App.swift in Sources */,
+				CEA29E852CA826B3009128D9 /* SwiftUIView.swift in Sources */,
 				CE80B83B2C9D57690056BBF1 /* Evaluation.swift in Sources */,
-				CE80B7F52C9B20FA0056BBF1 /* OldProfileView.swift in Sources */,
 				CE80B7CA2C99BD1E0056BBF1 /* ProjectView.swift in Sources */,
 				CE80B7FF2C9B41690056BBF1 /* TestView.swift in Sources */,
 				CE80B7FB2C9B27100056BBF1 /* Event.swift in Sources */,

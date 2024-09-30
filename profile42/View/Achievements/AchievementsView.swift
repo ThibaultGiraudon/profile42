@@ -6,70 +6,12 @@
 //
 
 import SwiftUI
-import SwiftSVG
-
-struct SVGImageView: UIViewRepresentable {
-    let svgName: String
-
-    class Coordinator {
-        func fetchSVGData(for url: URL, completion: @escaping (Data?) -> Void) {
-            Task {
-                var request = URLRequest(url: url)
-                request.httpMethod = "GET"
-                
-                do {
-                    let (data, response) = try await URLSession.shared.data(for: request)
-                    guard (response as? HTTPURLResponse)?.statusCode == 200 else {
-                        print("Server error")
-                        completion(nil)
-                        return
-                    }
-                    completion(data)
-                } catch {
-                    print("Erreur lors du téléchargement de l'image SVG : \(error)")
-                    completion(nil)
-                }
-            }
-        }
-    }
-
-    func makeCoordinator() -> Coordinator {
-        return Coordinator()
-    }
-
-    func makeUIView(context: Context) -> UIView {
-        let svgView = UIView()
-
-        var svgString = svgName
-        if svgString.hasPrefix("/uploads") {
-            svgString.removeFirst(9)
-            svgString = "https://cdn.intra.42.fr/\(svgString)"
-        }
-        guard let url = URL(string: svgString) else {
-            return svgView
-        }
-
-        context.coordinator.fetchSVGData(for: url) { data in
-            guard let data = data else { return }
-            
-            DispatchQueue.main.async {
-                let svgSubview = UIView(svgData: data)
-                
-                svgView.addSubview(svgSubview)
-            }
-        }
-
-        return svgView
-    }
-
-    func updateUIView(_ uiView: UIView, context: Context) {
-    }
-}
 
 
 
 struct AchievementsView: View {
     var user: User
+    @State private var achievements: [Achievement].SubSequence = []
     var body: some View {
         ScrollView(showsIndicators: false) {
             HStack {
@@ -86,7 +28,7 @@ struct AchievementsView: View {
                         .foregroundStyle(.cyan)
                 }
             }
-            ForEach(user.achievements.prefix(5), id: \.id) { achievement in
+            ForEach($achievements, id: \.id) { $achievement in
                 HStack {
                     VStack(alignment: .leading) {
                         Text(achievement.name)
@@ -111,7 +53,7 @@ struct AchievementsView: View {
                     Spacer()
                     VStack(alignment: .center) {
                         Spacer()
-                        SVGImageView(svgName: achievement.image)
+                        SVGImageView(svgName: $achievement.image, size: CGRect(x: 0, y: 0, width: 50, height: 50))
                             .frame(width: 50, height: 50)
                         if achievement.tier.isEmpty { }
                         else if achievement.tier == "easy" {
@@ -143,6 +85,9 @@ struct AchievementsView: View {
                         .stroke(.gray.opacity(0.3), lineWidth: 3)
                 }
             }
+        }
+        .onAppear {
+            achievements = user.achievements.prefix(5)
         }
     }
 }

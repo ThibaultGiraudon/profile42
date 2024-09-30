@@ -11,8 +11,8 @@ struct Coalition: Codable {
     let id: Int
     let name: String
     let slug: String
-    let imageURL: String
-    let coverURL: String
+    var imageURL: String
+    var coverURL: String?
     let color: String
     let score: Int
     let userID: Int
@@ -21,7 +21,7 @@ struct Coalition: Codable {
         self.id = 0
         self.name = ""
         self.slug = ""
-        self.imageURL = "drop"
+        self.imageURL = ""
         self.coverURL = ""
         self.color = ""
         self.score = 0
@@ -37,19 +37,24 @@ struct Coalition: Codable {
         self.score = try container.decode(Int.self, forKey: .score)
         self.coverURL = try container.decode(String.self, forKey: .coverURL)
         self.userID = try container.decode(Int.self, forKey: .userID)
+        self.imageURL = try container.decode(String.self, forKey: .imageURL)
         
-        switch self.name {
-        case "Water":
-            self.imageURL = "drop"
-        case "Earth":
-            self.imageURL = "globe"
-        case "Air":
-            self.imageURL = "wind"
-        case "Fire":
-            self.imageURL = "flame"
-        default:
-            self.imageURL = "flame"
+        if self.coverURL == nil {
+            self.coverURL = "https://profile.intra.42.fr/assets/background_login-a4e0666f73c02f025f590b474b394fd86e1cae20e95261a6e4862c2d0faa1b04.jpg"
         }
+//        
+//        switch self.name {
+//        case "Water":
+//            self.imageURL = "drop"
+//        case "Earth":
+//            self.imageURL = "globe"
+//        case "Air":
+//            self.imageURL = "wind"
+//        case "Fire":
+//            self.imageURL = "flame"
+//        default:
+//            self.imageURL = "star"
+//        }
     }
     
     enum CodingKeys: String, CodingKey {

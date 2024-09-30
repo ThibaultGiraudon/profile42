@@ -49,9 +49,7 @@ struct AllAchievementsView: View {
     var user: User
     @State private var selectedRank: FilterBy = .none
     @State private var selectedKind: Kind = .all
-    var filteredAchievement: [Achievement] {
-        user.achievements.filter{ (selectedKind == .all ? true : $0.kind == selectedKind.rawValue) && $0.tier == selectedRank.name }
-    }
+    @State var filteredAchievement = [Achievement]()
     var body: some View {
         ScrollView(showsIndicators: false) {
             HStack {
@@ -71,6 +69,7 @@ struct AllAchievementsView: View {
                     }
                     .onTapGesture {
                         selectedKind = kind
+                        filteredAchievement = user.achievements.filter{ (selectedKind == .all ? true : $0.kind == selectedKind.rawValue) && $0.tier == selectedRank.name }
                     }
                 }
             }
@@ -82,8 +81,11 @@ struct AllAchievementsView: View {
                     }
                 }
                 .pickerStyle(.palette)
+                .onChange(of: selectedRank) {
+                    filteredAchievement = user.achievements.filter{ (selectedKind == .all ? true : $0.kind == selectedKind.rawValue) && $0.tier == selectedRank.name }
+                }
             }
-            ForEach(filteredAchievement, id: \.id) { achievement in
+            ForEach($filteredAchievement, id: \.id) { $achievement in
                 HStack {
                     VStack(alignment: .leading) {
                         Text(achievement.name)
@@ -106,7 +108,7 @@ struct AllAchievementsView: View {
                     Spacer()
                     VStack(alignment: .center) {
                         Spacer()
-                        SVGImageView(svgName: achievement.image)
+                        SVGImageView(svgName: $achievement.image, size: CGRect(x: 0, y: 0, width: 50, height: 50))
                             .frame(width: 50, height: 50)
                         if achievement.tier == "none" {
                             
@@ -146,6 +148,9 @@ struct AllAchievementsView: View {
                         .stroke(.gray.opacity(0.3), lineWidth: 3)
                 }
             }
+        }
+        .onAppear {
+            filteredAchievement = user.achievements.filter{ (selectedKind == .all ? true : $0.kind == selectedKind.rawValue) && $0.tier == selectedRank.name }
         }
     }
 }

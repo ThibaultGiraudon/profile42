@@ -35,8 +35,8 @@ struct User: Codable {
     let projectsUsers: [ProjectUser]
     let languagesUsers: [LanguageUser]
     var achievements: [Achievement]
-    let titles: [String]
-    let titlesUsers: [String]
+    let titles: [Title]
+    let titlesUsers: [TitleUser]
     let partnerships: [Partnership]
     let patroned: [Patron]
     let patroning: [Patron]
@@ -133,7 +133,30 @@ struct SImage: Codable {
     }
 }
 
-struct CursusUser: Codable {
+struct Title: Codable {
+    let id: Int
+    let name: String
+}
+
+struct TitleUser: Codable {
+    let id: Int
+    let userID: Int
+    let titleID: Int
+    let selected: Bool
+    let createdAt: String
+    let updatedAt: String
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case userID = "user_id"
+        case titleID = "title_id"
+        case selected
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+    }
+}
+
+struct CursusUser: Codable, Hashable {
     let id: Int
     let beginAt: String
     let endAt: String?
@@ -175,19 +198,19 @@ struct CursusUser: Codable {
         case blackholedAt = "blackholed_at"
     }
     
-    struct Skills: Codable, Identifiable  {
+    struct Skills: Codable, Identifiable, Hashable {
         let id: Int
         let name: String
         let level: Double
     }
 
-    struct UserRef: Codable{
+    struct UserRef: Codable, Hashable {
         let id: Int
         let login: String
         let url: String
     }
 
-    struct Cursus: Codable {
+    struct Cursus: Codable, Hashable {
         let id: Int
         let createdAt: String
         let name: String
@@ -272,14 +295,14 @@ struct ProjectUser: Codable, Identifiable, Hashable {
 }
 
 
-struct Achievement: Codable {
+struct Achievement: Codable, Identifiable, Hashable {
     let id: Int
     let name: String
     let description: String
     let tier: String
     let kind: String
     let visible: Bool
-    let image: String
+    var image: String
     let nbrOfSuccess: Int?
     let usersURL: String
     
