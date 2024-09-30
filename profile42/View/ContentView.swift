@@ -72,21 +72,29 @@ struct ContentView: View {
                     }
                     .disabled(api.isLoading)
                     Spacer()
-                    Text(api.user.login)
-                        .font(.title2.bold())
-                        .foregroundStyle(.gray)
-                        .padding()
-                        .contextMenu {
-                            Button("View my profile") {
-                                api.selectedUser = api.user
-                                api.activeTab = .otherProfile
-                            }
-                            .disabled(api.isLoading)
-                            Button("Logout", role: .destructive) {
-                                api.logOut()
-                            }
-                            .disabled(api.isLoading)
+                    Menu {
+                        Button("View my profile") {
+                            api.selectedUser = api.user
+                            api.navHistory.append(.otherProfile)
+                            api.userHistory.append(api.user)
+                            print(api.userHistory.count)
+                            api.activeTab = .otherProfile
                         }
+                        .disabled(api.isLoading)
+                        Button("Setting") {
+                            api.activeTab = .profile
+                            
+                        }
+                        Button("Logout", role: .destructive) {
+                            api.logOut()
+                        }
+                        .disabled(api.isLoading)
+                    } label: {
+                        Text(api.user.login)
+                            .font(.title2.bold())
+                            .foregroundStyle(.gray)
+                            .padding()
+                    }
                 }
                 ZStack {
                     ZStack {
@@ -155,17 +163,22 @@ struct ContentView: View {
             }
         }
         .onChange(of: api.applicationToken) {
-            if api.coalitions.isEmpty {
-                api.isLoading = true
+            Task {
+                do {
+                    try await api.logIn()
+                } catch {
+                    print(error)
+                    api.alertTitle = error.localizedDescription
+                    api.showAlert = true
+                    api.activeTab = .profile
+                }
+            }
+        }
+        .onAppear {
+            if !api.isLoggedIn {
                 Task {
                     do {
-                        let user: User = try await api.fetchData(API.UserEndPoint.user)
-                        api.user = user
-                        api.currentCursus = api.getCurrentCursus(from: user.cursusUsers)
-                        api.currentCampus = api.getCurrentCampus(from: user.campus)
-                        api.events = try await api.fetchData(API.EventEndPoints.events(campusID: api.currentCampus.id, cursusID: api.currentCursus.cursusID))
-                        api.coalitions = try await api.fetchData(API.CoalitionEndPoint.coalition(id: user.id))
-                        api.isLoggedIn = true
+                        try await api.logIn()
                     } catch {
                         print(error)
                         api.alertTitle = error.localizedDescription
@@ -173,17 +186,30 @@ struct ContentView: View {
                         api.activeTab = .profile
                     }
                 }
-                api.isLoading = false
             }
         }
         .alert(isPresented: $api.showAlert) {
             Alert(title: Text(api.alertTitle))
         }
     }
+    
+    
     private func goBack() {
         guard !api.navHistory.isEmpty else { return }
         api.navHistory.removeLast()
+        
         if let lastTab = api.navHistory.last {
+            if api.activeTab == .otherProfile {
+                if api.userHistory.count > 0 {
+                    api.userHistory.removeLast()
+                }
+            }
+            if lastTab == .otherProfile {
+                api.selectedUser = api.userHistory.last ?? api.user
+                if api.userHistory.count > 0 {
+                    api.userHistory.removeLast()
+                }
+            }
             api.activeTab = lastTab
         } else {
             api.activeTab = .profile

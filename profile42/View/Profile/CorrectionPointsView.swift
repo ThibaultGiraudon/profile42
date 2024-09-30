@@ -8,16 +8,6 @@
 import SwiftUI
 import Charts
 
-extension String {
-    func formattedDate(format: String) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "YYYY-MM-dd'T'HH:mm:ss.SSSZ"
-        let strFormatter = DateFormatter()
-        strFormatter.dateFormat = format
-        return strFormatter.string(from: dateFormatter.date(from: self) ?? Date())
-    }
-}
-
 struct CorrectionPointsView: View {
     var api: API
     var user: User

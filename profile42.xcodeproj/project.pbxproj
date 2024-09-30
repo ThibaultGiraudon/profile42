@@ -40,6 +40,13 @@
 		CE9532B02C984FF20097F670 /* API-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE9532AF2C984FF20097F670 /* API-Info.plist */; };
 		CEA29E832CA820F5009128D9 /* API+ExamEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA29E822CA820F5009128D9 /* API+ExamEndPoint.swift */; };
 		CEA29E852CA826B3009128D9 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA29E842CA826B3009128D9 /* SwiftUIView.swift */; };
+		CEA29E882CAAED07009128D9 /* String+formattedDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA29E872CAAED07009128D9 /* String+formattedDate.swift */; };
+		CEA29E8A2CAAED2D009128D9 /* String+toColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA29E892CAAED2D009128D9 /* String+toColor.swift */; };
+		CEA29E8C2CAAED51009128D9 /* SVGImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA29E8B2CAAED51009128D9 /* SVGImageView.swift */; };
+		CEA29E8E2CAAED6B009128D9 /* String+replace.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA29E8D2CAAED6B009128D9 /* String+replace.swift */; };
+		CEA29E902CAAED8A009128D9 /* String+-.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA29E8F2CAAED8A009128D9 /* String+-.swift */; };
+		CEA29E922CAAEDC4009128D9 /* String+Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA29E912CAAEDC4009128D9 /* String+Date.swift */; };
+		CEA29E942CAAEDF2009128D9 /* String+toDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA29E932CAAEDF2009128D9 /* String+toDate.swift */; };
 		CEA61E9A2C99A4CE004D5CC9 /* API+UserEndPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA61E992C99A4C2004D5CC9 /* API+UserEndPoints.swift */; };
 		CEA61E9C2C99A502004D5CC9 /* API+LogtimeEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA61E9B2C99A502004D5CC9 /* API+LogtimeEndPoint.swift */; };
 		CEA61E9E2C99A532004D5CC9 /* API+AuthEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA61E9D2C99A532004D5CC9 /* API+AuthEndPoint.swift */; };
@@ -105,6 +112,13 @@
 		CE9532AF2C984FF20097F670 /* API-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "API-Info.plist"; sourceTree = "<group>"; };
 		CEA29E822CA820F5009128D9 /* API+ExamEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+ExamEndPoint.swift"; sourceTree = "<group>"; };
 		CEA29E842CA826B3009128D9 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
+		CEA29E872CAAED07009128D9 /* String+formattedDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+formattedDate.swift"; sourceTree = "<group>"; };
+		CEA29E892CAAED2D009128D9 /* String+toColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+toColor.swift"; sourceTree = "<group>"; };
+		CEA29E8B2CAAED51009128D9 /* SVGImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImageView.swift; sourceTree = "<group>"; };
+		CEA29E8D2CAAED6B009128D9 /* String+replace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+replace.swift"; sourceTree = "<group>"; };
+		CEA29E8F2CAAED8A009128D9 /* String+-.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+-.swift"; sourceTree = "<group>"; };
+		CEA29E912CAAEDC4009128D9 /* String+Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Date.swift"; sourceTree = "<group>"; };
+		CEA29E932CAAEDF2009128D9 /* String+toDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+toDate.swift"; sourceTree = "<group>"; };
 		CEA61E992C99A4C2004D5CC9 /* API+UserEndPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+UserEndPoints.swift"; sourceTree = "<group>"; };
 		CEA61E9B2C99A502004D5CC9 /* API+LogtimeEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+LogtimeEndPoint.swift"; sourceTree = "<group>"; };
 		CEA61E9D2C99A532004D5CC9 /* API+AuthEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+AuthEndPoint.swift"; sourceTree = "<group>"; };
@@ -168,6 +182,7 @@
 			children = (
 				CE9532AE2C9837FE0097F670 /* Info.plist */,
 				CE95327A2C9829E50097F670 /* profile42App.swift */,
+				CEA29E862CAAECDA009128D9 /* Extension */,
 				CEC483B92CA30996006A9E3D /* View */,
 				CEA61E982C99A496004D5CC9 /* Model */,
 				CE9532AF2C984FF20097F670 /* API-Info.plist */,
@@ -210,6 +225,28 @@
 			path = Exam;
 			sourceTree = "<group>";
 		};
+		CEA29E862CAAECDA009128D9 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				CEA29E952CAAEE18009128D9 /* String */,
+				CEC483CA2CA59E35006A9E3D /* View+display.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		CEA29E952CAAEE18009128D9 /* String */ = {
+			isa = PBXGroup;
+			children = (
+				CEA29E932CAAEDF2009128D9 /* String+toDate.swift */,
+				CEA29E912CAAEDC4009128D9 /* String+Date.swift */,
+				CEA29E8D2CAAED6B009128D9 /* String+replace.swift */,
+				CEA29E892CAAED2D009128D9 /* String+toColor.swift */,
+				CEA29E872CAAED07009128D9 /* String+formattedDate.swift */,
+				CEA29E8F2CAAED8A009128D9 /* String+-.swift */,
+			);
+			path = String;
+			sourceTree = "<group>";
+		};
 		CEA61E982C99A496004D5CC9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -231,11 +268,11 @@
 		CEC483B92CA30996006A9E3D /* View */ = {
 			isa = PBXGroup;
 			children = (
+				CEA29E8B2CAAED51009128D9 /* SVGImageView.swift */,
 				CE95327C2C9829E50097F670 /* ContentView.swift */,
 				CE80B8002C9C46430056BBF1 /* SearchView.swift */,
 				CE80B7FE2C9B41690056BBF1 /* TestView.swift */,
 				CEA29E842CA826B3009128D9 /* SwiftUIView.swift */,
-				CEC483CA2CA59E35006A9E3D /* View+display.swift */,
 				CEC483BA2CA57841006A9E3D /* Achievements */,
 				CEC483BB2CA57851006A9E3D /* Projects */,
 				CEC483BC2CA578EC006A9E3D /* Profile */,
@@ -477,17 +514,22 @@
 				CEA61E9C2C99A502004D5CC9 /* API+LogtimeEndPoint.swift in Sources */,
 				CEA61EA22C99B01A004D5CC9 /* LogtimeView.swift in Sources */,
 				CE80B7E12C9AE37A0056BBF1 /* Correction.swift in Sources */,
+				CEA29E922CAAEDC4009128D9 /* String+Date.swift in Sources */,
 				CEA61EA02C99A561004D5CC9 /* API+Constants.swift in Sources */,
 				CE95327D2C9829E50097F670 /* ContentView.swift in Sources */,
 				CEC483CB2CA59E35006A9E3D /* View+display.swift in Sources */,
 				CE80B7D42C99D00A0056BBF1 /* CurrentProjectView.swift in Sources */,
+				CEA29E942CAAEDF2009128D9 /* String+toDate.swift in Sources */,
 				CEA29E832CA820F5009128D9 /* API+ExamEndPoint.swift in Sources */,
+				CEA29E902CAAED8A009128D9 /* String+-.swift in Sources */,
+				CEA29E8C2CAAED51009128D9 /* SVGImageView.swift in Sources */,
 				CEA61E9A2C99A4CE004D5CC9 /* API+UserEndPoints.swift in Sources */,
 				CE80B7DF2C9AD2C60056BBF1 /* AllAchievementsView.swift in Sources */,
 				CE80B7DA2C99DADB0056BBF1 /* AchievementsView.swift in Sources */,
 				CEA61E9E2C99A532004D5CC9 /* API+AuthEndPoint.swift in Sources */,
 				CE80B7E32C9AE3DC0056BBF1 /* API+Correction.swift in Sources */,
 				CE9532AD2C982FF00097F670 /* AuthViewController.swift in Sources */,
+				CEA29E8E2CAAED6B009128D9 /* String+replace.swift in Sources */,
 				CE80B7F92C9B26040056BBF1 /* API+EventEndPoints.swift in Sources */,
 				CEC483B82CA306EC006A9E3D /* API+Error.swift in Sources */,
 				CE4222D82C98581E00A6ECD8 /* User.swift in Sources */,
@@ -497,11 +539,13 @@
 				CE80B7F32C9B03650056BBF1 /* ProfileView.swift in Sources */,
 				CEC483C32CA579B9006A9E3D /* API+CoalitionEndPoint.swift in Sources */,
 				CE80B8012C9C46430056BBF1 /* SearchView.swift in Sources */,
+				CEA29E8A2CAAED2D009128D9 /* String+toColor.swift in Sources */,
 				CE4222DA2C9858DE00A6ECD8 /* API.swift in Sources */,
 				CE80B7F72C9B215B0056BBF1 /* EventView.swift in Sources */,
 				CE80B83D2C9D577B0056BBF1 /* API+EvaluationEndPoint.swift in Sources */,
 				CE95327B2C9829E50097F670 /* profile42App.swift in Sources */,
 				CEA29E852CA826B3009128D9 /* SwiftUIView.swift in Sources */,
+				CEA29E882CAAED07009128D9 /* String+formattedDate.swift in Sources */,
 				CE80B83B2C9D57690056BBF1 /* Evaluation.swift in Sources */,
 				CE80B7CA2C99BD1E0056BBF1 /* ProjectView.swift in Sources */,
 				CE80B7FF2C9B41690056BBF1 /* TestView.swift in Sources */,

@@ -26,16 +26,7 @@ struct ApplicationToken: Codable {
 }
 
 class API: ObservableObject {
-    @Published var isLoggedIn: Bool = false {
-        didSet {
-            do {
-                let data = try JSONEncoder().encode(isLoggedIn)
-                UserDefaults.standard.set(data, forKey: "isLoggedIn")
-            } catch {
-                print(error)
-            }
-        }
-    }
+    @Published var isLoggedIn: Bool = false
     @Published var token: Token = Token(accessToken: "", refreshToken: "") {
         didSet {
             do {
@@ -85,47 +76,39 @@ class API: ObservableObject {
     @Published var selectedEvent = Event()
     @Published var activeTab: Tab = .profile
     @Published var navHistory: [Tab] = [.profile]
+    @Published var userHistory: [User] = []
     @Published var failedCount: Int = 0
     
-//    init() {
-//        if let data = UserDefaults.standard.data(forKey: "isLoggedIn") {
-//            do {
-//                isLoggedIn = try JSONDecoder().decode(Bool.self, from: data)
-//            } catch {
-//                print(error)
-//            }
-//        } else {
-//            isLoggedIn = false
-//        }
-//        if let data = UserDefaults.standard.data(forKey: "token") {
-//            do {
-//                token = try JSONDecoder().decode(Token.self, from: data)
-//            } catch {
-//                print(error)
-//            }
-//        } else {
-//            token = Token(accessToken: "", refreshToken: "")
-//        }
-//        if let data = UserDefaults.standard.data(forKey: "applicationToken") {
-//            do {
-//                applicationToken = try JSONDecoder().decode(String.self, from: data)
-//            } catch {
-//                print(error)
-//            }
-//        } else {
-//            applicationToken = ""
-//        }
-//        
-//        if let data = UserDefaults.standard.data(forKey: "history") {
-//            do {
-//                history = try JSONDecoder().decode([User].self, from: data)
-//            } catch {
-//                print(error)
-//            }
-//        } else {
-//            history = []
-//        }
-//    }
+    init() {
+        if let data = UserDefaults.standard.data(forKey: "token") {
+            do {
+                token = try JSONDecoder().decode(Token.self, from: data)
+            } catch {
+                print(error)
+            }
+        } else {
+            token = Token(accessToken: "", refreshToken: "")
+        }
+        if let data = UserDefaults.standard.data(forKey: "applicationToken") {
+            do {
+                applicationToken = try JSONDecoder().decode(String.self, from: data)
+            } catch {
+                print(error)
+            }
+        } else {
+            applicationToken = ""
+        }
+        
+        if let data = UserDefaults.standard.data(forKey: "history") {
+            do {
+                history = try JSONDecoder().decode([User].self, from: data)
+            } catch {
+                print(error)
+            }
+        } else {
+            history = []
+        }
+    }
     
     func getEvaluations(for id: Int) -> [Evaluation] {
         var evaluations: [Evaluation] = []
@@ -148,11 +131,13 @@ class API: ObservableObject {
     }
 
     func getCurrentCampus(from allCampus: [Campus]) -> Campus {
-        allCampus.first!
+        let lastCampus = user.campusUsers.first(where: {$0.isPrimary} )!
+        
+        return allCampus.first(where: {$0.id == lastCampus.campusID})!
     }
     
     func getCurrentCursus(from allCursus: [CursusUser]) -> CursusUser {
-        var lastCursus = allCursus.first!
+        var lastCursus = CursusUser()
 
         for cursusUser in allCursus {
             if cursusUser.beginAt > lastCursus.beginAt {
@@ -258,9 +243,21 @@ class API: ObservableObject {
         return try JSONDecoder().decode(T.self, from: data)
     }
     
+    @MainActor
+    func logIn() async throws {
+        self.isLoading = true
+        let user: User = try await self.fetchData(UserEndPoint.user)
+        self.user = user
+        self.currentCursus = self.getCurrentCursus(from: user.cursusUsers)
+        self.currentCampus = self.getCurrentCampus(from: user.campus)
+        self.events = try await self.fetchData(EventEndPoints.events(campusID: self.currentCampus.id, cursusID: self.currentCursus.cursusID))
+        self.coalitions = try await self.fetchData(CoalitionEndPoint.coalition(id: user.id))
+        self.isLoggedIn = true
+        self.isLoading = false
+    }
+    
     func logOut() {
         isLoggedIn = false
-        UserDefaults.standard.removeObject(forKey: "isLoggedIn")
         UserDefaults.standard.removeObject(forKey: "token")
         UserDefaults.standard.removeObject(forKey: "applicationToken")
         UserDefaults.standard.removeObject(forKey: "history")

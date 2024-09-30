@@ -82,8 +82,10 @@ struct SearchView: View {
                         }
                         .onTapGesture {
                             api.selectedUser = user
-                            api.activeTab = .otherProfile
+                            api.userHistory.append(user)
                             api.navHistory.append(.otherProfile)
+                            print(api.userHistory.count)
+                            api.activeTab = .otherProfile
                         }
                     }
                 }

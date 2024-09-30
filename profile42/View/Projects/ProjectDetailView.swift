@@ -51,6 +51,24 @@ struct ProjectDetailView: View {
                             ForEach(firstEvaluation.team.users, id: \.id) { user in
                                 Text(user.login)
                                     .font(.callout)
+                                    .onTapGesture {
+                                        Task {
+                                            do {
+                                                let user: User = try await api.fetchData(API.UserEndPoint.search(login: user.login))
+                                                api.selectedUser = user
+                                                api.userHistory.append(user)
+                                                print(api.userHistory.count)
+                                                api.navHistory.append(.otherProfile)
+                                                api.activeTab = .otherProfile
+                                            } catch {
+                                                print(error)
+                                                api.alertTitle = error.localizedDescription
+                                                api.showAlert = true
+                                                api.activeTab = .project
+                                                api.navHistory.append(.project)
+                                            }
+                                        }
+                                    }
                             }
                         }
                         .padding(10)
@@ -83,6 +101,24 @@ struct ProjectDetailView: View {
                                     Text(evaluation.corrector.login.uppercased())
                                         .font(.caption.bold())
                                         .foregroundStyle(.cyan)
+                                        .onTapGesture {
+                                            Task {
+                                                do {
+                                                    let user: User = try await api.fetchData(API.UserEndPoint.search(login: evaluation.corrector.login))
+                                                    api.selectedUser = user
+                                                    api.userHistory.append(user)
+                                                    print(api.userHistory.count)
+                                                    api.navHistory.append(.otherProfile)
+                                                    api.activeTab = .otherProfile
+                                                } catch {
+                                                    print(error)
+                                                    api.alertTitle = error.localizedDescription
+                                                    api.showAlert = true
+                                                    api.activeTab = .project
+                                                    api.navHistory.append(.project)
+                                                }
+                                            }
+                                        }
                                     Text(" \(getDuration(from: evaluation.updatedAt)) AGO")
                                         .font(.caption.bold())
                                         .foregroundStyle(.gray)

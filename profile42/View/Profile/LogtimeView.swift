@@ -7,14 +7,6 @@
 
 import SwiftUI
 
-extension String {
-    func toDate() -> Date {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "YYYY-MM-dd'T'HH:mm:ss.SSSZ"
-        return dateFormatter.date(from: self) ?? Date()
-    }
-}
-
 struct LogtimeView: View {
     var locationStats: [String: String]
     var startDate: String
