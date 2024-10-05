@@ -13,7 +13,6 @@ import Charts
 enum TabProfile: CaseIterable {
     case projects
     case achievements
-    case patronage
     
     var image: String {
         switch self {
@@ -21,8 +20,6 @@ enum TabProfile: CaseIterable {
             "folder"
         case .achievements:
             "medal"
-        case .patronage:
-            "person.badge.shield.checkmark"
         }
     }
 }
@@ -128,7 +125,7 @@ struct ContentView: View {
                         )
                 }
             } else {
-                Button("Login with OAuth 2.0") {
+                Button("Login with 42") {
                     showingWebView = true
                 }
                 .sheet(isPresented: $showingWebView) {

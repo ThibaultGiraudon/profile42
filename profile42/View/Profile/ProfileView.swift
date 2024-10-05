@@ -179,6 +179,7 @@ struct ProfileView: View {
                             ForEach(TabProfile.allCases, id: \.self) { tab in
                                 Image(systemName: tab.image)
                                     .padding(5)
+                                    .foregroundStyle(.black)
                                     .background(tab == selectedTab ? Color.gray.opacity(0.2) : .clear)
                                     .onTapGesture {
                                         selectedTab = tab
@@ -192,8 +193,6 @@ struct ProfileView: View {
                                 ProjectView(api: api, finishedProjects: finishedProjects)
                             case .achievements:
                                 AchievementsView(user: user)
-                            case .patronage:
-                                ScrollView {}
                             }
                         }
                     }

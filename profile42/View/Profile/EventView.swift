@@ -11,46 +11,46 @@ struct EventView: View {
     @StateObject var api: API
     var body: some View {
         VStack {
+            HStack {
+                Text("AGENDA")
+                    .font(.headline)
+                    .foregroundStyle(.black)
+                Spacer()
+                Text("ALL")
+                    .padding(5)
+                    .overlay {
+                        Rectangle()
+                            .stroke(.cyan, lineWidth: 1)
+                    }
+                    .foregroundStyle(.cyan)
+                    .onTapGesture {
+                        Task {
+                            do {
+                                api.events = try await api.fetchData(API.EventEndPoints.events(campusID: api.currentCampus.id, cursusID: api.currentCursus.cursusID))
+                            } catch {
+                                print(error)
+                            }
+                        }
+                    }
+                    .padding(.horizontal)
+                Text("SUBSCRIBED")
+                    .padding(5)
+                    .overlay {
+                        Rectangle()
+                            .stroke(.cyan, lineWidth: 1)
+                    }
+                    .foregroundStyle(.cyan)
+                    .onTapGesture {
+                        Task {
+                            do {
+                                api.events = try await api.fetchData(API.EventEndPoints.subscribed(id: api.user.id))
+                            } catch {
+                                print(error)
+                            }
+                        }
+                    }
+            }
             ScrollView(showsIndicators: false) {
-                HStack {
-                    Text("AGENDA")
-                        .font(.headline)
-                        .foregroundStyle(.black)
-                    Spacer()
-                    Text("ALL")
-                        .padding(5)
-                        .overlay {
-                            Rectangle()
-                                .stroke(.cyan, lineWidth: 1)
-                        }
-                        .foregroundStyle(.cyan)
-                        .onTapGesture {
-                            Task {
-                                do {
-                                    api.events = try await api.fetchData(API.EventEndPoints.events(campusID: api.currentCampus.id, cursusID: api.currentCursus.cursusID))
-                                } catch {
-                                    print(error)
-                                }
-                            }
-                        }
-                        .padding(.horizontal)
-                    Text("SUBSCRIBED")
-                        .padding(5)
-                        .overlay {
-                            Rectangle()
-                                .stroke(.cyan, lineWidth: 1)
-                        }
-                        .foregroundStyle(.cyan)
-                        .onTapGesture {
-                            Task {
-                                do {
-                                    api.events = try await api.fetchData(API.EventEndPoints.subscribed(id: api.user.id))
-                                } catch {
-                                    print(error)
-                                }
-                            }
-                        }
-                }
                 ForEach(api.events, id: \.id) { event in
                     var color: Color {
                         if event.kind == "hackathon" {
@@ -105,89 +105,23 @@ struct EventView: View {
                     }
                 }
             }
+            .overlay {
+                if api.events.isEmpty {
+                    VStack {
+                        Image(systemName: "calendar.circle.fill")
+                            .resizable()
+                            .frame(width: 100, height: 100)
+                            .foregroundStyle(.gray.opacity(0.5))
+                        Text("No events found")
+                            .font(.headline)
+                            .foregroundStyle(.gray.opacity(0.5))
+                    }
+                }
+            }
             .frame(height: 300)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding()
-    }
-    
-    func formatText(_ rawText: String) -> AttributedString {
-        let mutableString = NSMutableAttributedString(string: rawText)
-        var nbChar: Int = 0
-        var text = rawText
-        
-        rawText.enumerateSubstrings(in: rawText.startIndex..<rawText.endIndex, options: .byLines) { sub, subRange, _, _ in
-            if (sub != nil) && sub!.hasPrefix("#") {
-                var nsRange = NSRange(subRange, in: rawText)
-                let length: Int = sub!.prefix(while: { (character) -> Bool in
-                    return character == "#"
-                }).count
-                nsRange.location -= nbChar
-                mutableString.addAttribute(.font, value: UIFont.systemFont(ofSize: 26), range: nsRange)
-                nsRange.length = length
-                mutableString.replaceCharacters(in: nsRange, with: "")
-                text = text.remove(nsRange: nsRange)
-                nbChar += length
-            }
-        }
-        nbChar = 0
-        
-        var cpyText = text
-        let boldPattern = "\\*\\*(.*?)\\*\\*"
-        if let regex = try? NSRegularExpression(pattern: boldPattern) {
-            let matches = regex.matches(in: text, range: NSRange(text.startIndex..., in: text))
-            for match in matches {
-                if let range = Range(match.range, in: text) {
-                    var nsRange = NSRange(range, in: text)
-                    nsRange.location -= nbChar
-                    let attribute = mutableString.attributes(at: nsRange.location, effectiveRange: nil)[.font]
-                    var size: CGFloat = 18
-                    if let font = attribute as? UIFont {
-                        size = font.pointSize
-                    }
-                    mutableString.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: size), range: nsRange)
-                    let nsRangeLength: Int = nsRange.length
-                    nsRange.length = 2
-                    mutableString.replaceCharacters(in: nsRange, with: "")
-                    cpyText = cpyText.remove(nsRange: nsRange)
-                    nsRange.location += nsRangeLength - 4
-                    mutableString.replaceCharacters(in: nsRange, with: "")
-                    cpyText = cpyText.remove(nsRange: nsRange)
-                    nbChar += 4
-                }
-            }
-        }
-        
-        text = cpyText
-        nbChar = 0
-        let italicPatern = "\\*(.*?)\\*"
-        if let regex = try? NSRegularExpression(pattern: italicPatern) {
-            let matches = regex.matches(in: text, range: NSRange(text.startIndex..., in: text))
-            for match in matches {
-                if let range = Range(match.range, in: text) {
-                    var nsRange = NSRange(range, in: text)
-                    nsRange.location -= nbChar
-                    let attribute = mutableString.attributes(at: nsRange.location, effectiveRange: nil)[.font]
-                    var size: CGFloat = 18
-                    if let font = attribute as? UIFont {
-                        size = font.pointSize
-                    }
-                    mutableString.addAttribute(.font, value: UIFont.italicSystemFont(ofSize: size), range: nsRange)
-                    let nsRangeLength: Int = nsRange.length
-                    nsRange.length = 1
-                    mutableString.replaceCharacters(in: nsRange, with: "")
-                    cpyText = cpyText.remove(nsRange: nsRange)
-                    nsRange.location += nsRangeLength - 2
-                    mutableString.replaceCharacters(in: nsRange, with: "")
-                    cpyText = cpyText.remove(nsRange: nsRange)
-                    nbChar += 2
-                }
-            }
-        }
-        
-        let atttributedString = AttributedString(mutableString)
-        
-        return atttributedString
     }
     
     func getDuration(_ beginAt: String, _ endAt: String) -> String {

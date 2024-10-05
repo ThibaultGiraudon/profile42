@@ -11,7 +11,7 @@ import SwiftUI
 struct AuthViewController: UIViewRepresentable {
     let url: URL
     let onCodeReceived: (String) -> Void
-    
+
     class Coordinator: NSObject, WKNavigationDelegate {
         var parent: AuthViewController
 
@@ -30,7 +30,7 @@ struct AuthViewController: UIViewRepresentable {
             decisionHandler(.allow)
         }
     }
-    
+
     func makeCoordinator() -> Coordinator {
         Coordinator(parent: self)
     }
@@ -38,9 +38,28 @@ struct AuthViewController: UIViewRepresentable {
     func makeUIView(context: Context) -> WKWebView {
         let webView = WKWebView()
         webView.navigationDelegate = context.coordinator
-        webView.load(URLRequest(url: url))
+
+        // Effacer les cookies et les données avant de charger l'URL
+        clearCookiesAndCache {
+            webView.load(URLRequest(url: url))
+        }
+
         return webView
     }
 
     func updateUIView(_ uiView: WKWebView, context: Context) {}
+
+    // Fonction pour effacer les cookies et les données de cache
+    func clearCookiesAndCache(completion: @escaping () -> Void) {
+        let dataStore = WKWebsiteDataStore.default()
+        let types = WKWebsiteDataStore.allWebsiteDataTypes()
+        
+        dataStore.fetchDataRecords(ofTypes: types) { records in
+            dataStore.removeData(ofTypes: types, for: records) {
+                print("Cookies and cache cleared")
+                completion()
+            }
+        }
+    }
 }
+

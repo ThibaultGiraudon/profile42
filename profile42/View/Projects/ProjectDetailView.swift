@@ -43,6 +43,15 @@ struct ProjectDetailView: View {
                                 .foregroundStyle((api.selectedProject.finalMark ?? 0) >= 80 ? .green : .red)
                         }
                         // TODO add This team was locked 5 months ago and closed 5 months ago
+                        HStack(spacing: 0) {
+                            Text("This team was locked ") +
+                            Text("\(getDuration(from: firstEvaluation.team.lockedAt)) ago")
+                                .bold() +
+                            Text(" and closed ") +
+                            Text("\(getDuration(from: firstEvaluation.team.closedAt)) ago")
+                                .bold()
+                        }
+                        .lineLimit(2)
                         Divider()
                         Text("USERS - \(firstEvaluation.team.users.count) USERS IN THIS TEAM")
                             .font(.callout)
@@ -117,7 +126,7 @@ struct ProjectDetailView: View {
                                                 }
                                             }
                                         }
-                                    Text(" \(getDuration(from: evaluation.updatedAt)) AGO")
+                                    Text(" \(getDuration(from: evaluation.updatedAt)) AGO".uppercased())
                                         .font(.caption.bold())
                                         .foregroundStyle(.gray)
                                     Spacer()
@@ -137,7 +146,7 @@ struct ProjectDetailView: View {
                                         .background(.gray.opacity(0.2))
                                     Spacer()
                                 }
-                                Text("YOUR FEEDBACK, \(getDuration(from: firstEvaluation.updatedAt)) AGO")
+                                Text("YOUR FEEDBACK, \(getDuration(from: firstEvaluation.updatedAt)) AGO".uppercased())
                                     .font(.caption)
                                     .foregroundStyle(.gray.opacity(0.5))
                                     .padding(.vertical, 5)
@@ -194,24 +203,27 @@ struct ProjectDetailView: View {
     }
     
     func getDuration(from date: String) -> String {
+        if date.isEmpty {
+            return "-"
+        }
         let duration = Calendar.current.dateComponents([.minute], from: date.toDate(), to: Date()).minute ?? 0
         if duration > 60 * 24 * 365 {
             let years = duration / (60 * 24 * 365)
-            return String(years) + " YEARS"
+            return String(years) + " years"
         }
         if duration > 60 * 24 * 30 {
             let months = duration / (60 * 24 * 30)
-            return String(months) + " MONTHS"
+            return String(months) + " months"
         }
         if duration > 60 * 24 {
             let days = duration / (60 * 24)
-            return String(days) + " DAYS"
+            return String(days) + " days"
         }
         if duration > 60 {
             let days = duration / 24
-            return String(days) + " HOURS"
+            return String(days) + " hours"
         }
-        return String(duration) + " MINUTES"
+        return String(duration) + " minutes"
     }
     
 }
