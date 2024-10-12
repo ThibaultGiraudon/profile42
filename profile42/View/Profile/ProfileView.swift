@@ -217,9 +217,7 @@ struct ProfileView: View {
             currentCoalitionUser = getCoalition(from: selectedCursus.updatedAt, in: coalitionsUsers)
             currentCoalition = coalitions.first(where: {
                             for component in selectedCursus.cursus.slug.components(separatedBy: "-") {
-                                print(component)
                                 if !$0.slug.contains(component) {
-                                    print("not found, \(component) in \($0.slug)")
                                     return false
                                 }
                             }

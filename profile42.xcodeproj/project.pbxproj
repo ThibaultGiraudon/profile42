@@ -36,7 +36,6 @@
 		CE9532962C9829E60097F670 /* profile42UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9532952C9829E60097F670 /* profile42UITests.swift */; };
 		CE9532982C9829E60097F670 /* profile42UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9532972C9829E60097F670 /* profile42UITestsLaunchTests.swift */; };
 		CE9532AD2C982FF00097F670 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9532AC2C982FF00097F670 /* AuthViewController.swift */; };
-		CE9532B02C984FF20097F670 /* API-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE9532AF2C984FF20097F670 /* API-Info.plist */; };
 		CEA29E832CA820F5009128D9 /* API+ExamEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA29E822CA820F5009128D9 /* API+ExamEndPoint.swift */; };
 		CEA29E882CAAED07009128D9 /* String+formattedDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA29E872CAAED07009128D9 /* String+formattedDate.swift */; };
 		CEA29E8A2CAAED2D009128D9 /* String+toColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA29E892CAAED2D009128D9 /* String+toColor.swift */; };
@@ -55,6 +54,7 @@
 		CEC483C72CA59403006A9E3D /* EventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC483C62CA59403006A9E3D /* EventDetailView.swift */; };
 		CEC483CB2CA59E35006A9E3D /* View+display.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC483CA2CA59E35006A9E3D /* View+display.swift */; };
 		CED30EC82CBA5FDF00941FE9 /* String+remove.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED30EC72CBA5FDF00941FE9 /* String+remove.swift */; };
+		CED30ECA2CBA60B400941FE9 /* API-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CED30EC92CBA60B400941FE9 /* API-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,8 +106,6 @@
 		CE9532952C9829E60097F670 /* profile42UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = profile42UITests.swift; sourceTree = "<group>"; };
 		CE9532972C9829E60097F670 /* profile42UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = profile42UITestsLaunchTests.swift; sourceTree = "<group>"; };
 		CE9532AC2C982FF00097F670 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
-		CE9532AE2C9837FE0097F670 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		CE9532AF2C984FF20097F670 /* API-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "API-Info.plist"; sourceTree = "<group>"; };
 		CEA29E822CA820F5009128D9 /* API+ExamEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+ExamEndPoint.swift"; sourceTree = "<group>"; };
 		CEA29E872CAAED07009128D9 /* String+formattedDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+formattedDate.swift"; sourceTree = "<group>"; };
 		CEA29E892CAAED2D009128D9 /* String+toColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+toColor.swift"; sourceTree = "<group>"; };
@@ -126,6 +124,7 @@
 		CEC483C62CA59403006A9E3D /* EventDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailView.swift; sourceTree = "<group>"; };
 		CEC483CA2CA59E35006A9E3D /* View+display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+display.swift"; sourceTree = "<group>"; };
 		CED30EC72CBA5FDF00941FE9 /* String+remove.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+remove.swift"; sourceTree = "<group>"; };
+		CED30EC92CBA60B400941FE9 /* API-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "API-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -178,12 +177,11 @@
 		CE9532792C9829E50097F670 /* profile42 */ = {
 			isa = PBXGroup;
 			children = (
-				CE9532AE2C9837FE0097F670 /* Info.plist */,
+				CED30EC92CBA60B400941FE9 /* API-Info.plist */,
 				CE95327A2C9829E50097F670 /* profile42App.swift */,
 				CEA29E862CAAECDA009128D9 /* Extension */,
 				CEC483B92CA30996006A9E3D /* View */,
 				CEA61E982C99A496004D5CC9 /* Model */,
-				CE9532AF2C984FF20097F670 /* API-Info.plist */,
 				CE95327E2C9829E60097F670 /* Assets.xcassets */,
 				CE9532802C9829E60097F670 /* Preview Content */,
 			);
@@ -479,9 +477,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE4222D62C98564100A6ECD8 /* .gitignore in Resources */,
-				CE9532B02C984FF20097F670 /* API-Info.plist in Resources */,
 				CE9532822C9829E60097F670 /* Preview Assets.xcassets in Resources */,
 				CE95327F2C9829E60097F670 /* Assets.xcassets in Resources */,
+				CED30ECA2CBA60B400941FE9 /* API-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
